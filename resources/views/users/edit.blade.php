@@ -1,0 +1,55 @@
+@extends('layouts.app')
+@section('content')
+    <h1>Edit Account</h1>
+    @include('errors')
+    <div class="container">
+        <form action="{{ route('users.update',['user'=>$user]) }}" method="post">
+            @method('PUT')
+            @csrf
+            <div class="form-row">
+
+                <div class="form-group col-md-6">
+                    <label for="">Name</label>
+                    <input type="text" placeholder="Name" name="name" class="form-control" value="{{$user->name}}">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="inputPassword">Password</label>
+                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="inputConfirmPassword">Confirm Password</label>
+                    <input type="password" name="confirm_password" class="form-control" id="inputPassword" placeholder="Confirm Password">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputDate">Date of Birth</label>
+                    <input type="date" name="date_of_birth" class="form-control" id="inputDate" value="{{$user->date_of_birth}}">
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="inputGender">Gender</label>
+                    <select name='gender' id="inputGender" class="form-control" value="{{$user->gender}}">
+                        <option selected disabled>Choose an Option...</option>
+                        <option value="1" @if($user->gender == 1) selected @endif>Male</option>
+                        <option value="2" @if($user->gender == 2) selected @endif>Female</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="inputType">Type</label>
+                    <select name='type' id="inputType" class="form-control" value="{{$user->type}}">
+                        <option selected disabled>Choose an Option...</option>
+                        <option value="1" @if($user->type == 1) selected @endif>Admin</option>
+                        <option value="2" @if($user->type == 2) selected @endif>Not Admin</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+@endsection('content')
