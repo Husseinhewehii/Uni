@@ -1,4 +1,6 @@
 @extends('layouts.app')
+
+<?php use App\Constants\UserTypes; ?>
 @section('content')
     <h1>Create Account</h1>
     @include('errors')
@@ -45,8 +47,9 @@
                     <label for="inputType">Type</label>
                     <select name='type' id="inputType" class="form-control" >
                         <option value="" selected disabled>Choose an Option...</option>
-                        <option value="1" @if (old('type')==1) selected @endif>Admin</option>
-                        <option value="2" @if (old('type')==2) selected @endif>User</option>
+                        @foreach(UserTypes::getList() as $key => $value)
+                            <option value="{{ $key }}" @if (old('type')==$key) selected @endif>{{ $value }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
@@ -55,4 +58,5 @@
             <button type="submit" class="btn btn-primary" >Create</button>
         </form>
     </div>
+
 @endsection('content')

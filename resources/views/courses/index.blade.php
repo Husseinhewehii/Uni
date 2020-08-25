@@ -1,6 +1,4 @@
 @extends('layouts.app')
-
-
 @section('content')
     <h1>courses</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -15,7 +13,6 @@
                             <tr>
                                 <th><span>Name</span></th>
                                 <th><span>Professor</span></th>
-
                                 <th class="text-center"><span>Start Date</span></th>
                                 <th class="text-center"><span>End Date</span></th>
                                 <th><span>Students Enrolled</span></th>
@@ -32,7 +29,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        {{--{{$course->professor}}--}}
+                                        <div>
+                                            <a href="{{ $course->professor ? route('users.courses.index.professor',['user'=>$course->professor]) : '#'}}" class="user-link">{{$course->professor ? $course->professor->name : '' }}</a>
+                                        </div>
                                     </td>
 
                                     <td class="text-center">

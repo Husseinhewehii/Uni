@@ -15,11 +15,16 @@ class Course extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'start_date', 'end_date'
+        'name','professor_id', 'start_date', 'end_date'
     ];
 
     public function users(){
-        return $this->belongsToMany(User::class,'course_user','course_id','user_id');
-        //return $this->belongsToMany(User::class);
+        //return $this->belongsToMany(User::class,'course_user','course_id','user_id');
+        return $this->belongsToMany(User::class);
     }
+
+    public function professor(){
+        return $this->belongsTo(User::class, 'professor_id' );
+    }
+
 }

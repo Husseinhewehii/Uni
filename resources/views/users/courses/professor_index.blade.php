@@ -1,10 +1,11 @@
 @extends('layouts.app')
+<?php use App\Constants\UserTypes; ?>
 @section('content')
-    <h1 class="">User's Courses, Welcome {{$user->name}}</h1>
+    <h1 class="">{{UserTypes::getOne($user->type)}}'s Courses, Welcome {{$user->name}}</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
-        <a class="btn btn-success" style="margin: 12px auto;" href="{{route('users.courses.create',['user'=>$user])}}"> Add Course</a>
+        <a class="btn btn-success" style="margin: 12px auto;" href="{{route('courses.create',['user'=>$user])}}"> Add Course</a>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -12,7 +13,7 @@
                         <table class="table user-list">
                             <thead>
                             <tr>
-                                <th><span>User</span></th>
+                                <th><span>{{UserTypes::getOne($user->type)}}</span></th>
                                 <th><span>Course</span></th>
 
                                 <th class="text-center"><span>Start Date</span></th>
@@ -21,15 +22,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($courses as $course)
+                            @php $generalCourses = UserTypes::getOne($user->type)=='Student' ? $courses : $professorCourses @endphp
+                            @foreach($generalCourses as $course)
                                 <tr>
                                     <td>
                                         <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
                                         <h4>{{$user->name}}</h4>
-                                        <h6>{{$user->type == 1 ? "Admin" : "User"}}</h6>
+                                        <h6>{{UserTypes::getOne($user->type)}}</h6>
                                     </td>
                                     <td>
-                                        <h4>{{$course->name}}</h4>
+                                        <h4><a href="{{route('courses.users.index',['course'=>$course])}}">{{$course->name}}</h4></a>
                                     </td>
 
                                     <td class="text-center">
@@ -56,7 +58,7 @@
             </div>
         </div>
     </div>
-    @foreach ($courses as $course)
+    @foreach ($generalCourses as $course)
         <div class="modal fade" id="removeUser{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -66,7 +68,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('users.courses.destroy', ['user'=> $user,'course' => $course]) }}" method="Post">
+                    <form action="{{ route('users.courses.destroy.professor', [ 'user'=> $user, 'course' => $course]) }}" method="Post">
                         @method('DELETE')
                         @csrf
                         <div class="modal-body">

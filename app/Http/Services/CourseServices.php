@@ -43,4 +43,27 @@ class CourseServices
             return $course;
 
         }
+
+    public function createUser(Request $request, Course $course)
+    {
+        //
+        //$courses = $this->courseRepository->getAll()->paginate(10);
+
+
+        $user = $request->get('user');
+        if ($course->users->contains($user))
+        {
+            echo "there is a match";die;
+        }else{
+            $course->users()->syncWithoutDetaching($user);
+            $course->save();
+
+            return $course;
+        }
+
+        //$user->courses->contains($course)
+
+
+
+    }
     }

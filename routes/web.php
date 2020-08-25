@@ -15,28 +15,35 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Auth::routes(['verify'=>true]);
+Auth::routes(['verify'=>true]);
 
-//Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home');
 
 
-//Route::get('/list',"UserController@show") ;
-//Route::get('/edit/{id}',"UserController@edit") ;
-//Route::get('/create',"UserController@create") ;
-//Route::post('/store',"UserController@store") ;
 
-//Route::resource('users', 'UserController', ['as' => 'admin']);
-//Route::get('list', ['uses' => 'UserController@index', 'as' => 'web.user.tickets']);
 
-//Route::prefix("/user/{user}")->group(function () {
-//    Route::resource("courses", "UserCoursesController", ['as' => "user"])
-//        ->parameter('courses', 'userCourse');
-//});
-
+Route::get('users/index-student',"UserController@indexStudents")->name('users.index.students');
+Route::get('users/index-professor',"UserController@indexProfessors")->name('users.index.professors');
+Route::get('users/login',"UserController@goLogin")->name('users.go.login');
+Route::get('users/index-admin',"UserController@indexAdmins")->name('users.admins');
+//Route::post('users/login',"UserController@login")->name('users.login');
 Route::resource('users',"UserController");
-Route::resource('courses',"CourseController");
-Route::resource('users.courses',"UserCoursesController");
-Route::get('users/{user}/courses/{course}/check',"UserCoursesController@checkUserCourseRelation")->name('users.courses.check');
-Route::resource('courses.users',"CourseUsersController");
-Route::resource('contact','ContactController');
 
+Route::resource('courses',"CourseController");
+Route::resource('users.courses',"UserCoursesController")->except(['show']);
+Route::DELETE('users/{user}/courses/{course}/delete-student',"UserCoursesController@destroyStudent")->name('users.courses.destroy.student');
+Route::delete('users/{user}/courses/{course}/delete-professor',"UserCoursesController@destroyProfessor")->name('users.courses.destroy.professor');
+Route::get('users/{user}/courses/index-student',"UserCoursesController@indexStudent")->name('users.courses.index.student');
+Route::get('users/{user}/courses/index-professor',"UserCoursesController@indexProfessor")->name('users.courses.index.professor');
+Route::resource('courses.users',"CourseUsersController");
+
+
+Route::get('/ajax-form', 'ajaxcontroller@ajax_form');
+Route::post('/ajax', 'ajaxcontroller@ajax');
+
+
+Route::post('login/custom','LoginController@login')->name('login.custom');
+
+//Route::group(['middleware'=>'auth'],function (){
+//
+//});

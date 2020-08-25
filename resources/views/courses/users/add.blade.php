@@ -1,18 +1,21 @@
 @extends('layouts.app')
+<?php use App\Constants\UserTypes; ?>
 @section('content')
-    <h1>Add Course</h1>
+    <h1>Add Student</h1>
     @include('errors')
     <div class="container">
-        <form action="{{route('users.courses.store',['user'=>$user])}}" method="POST">
+        <form action="{{route('courses.users.store',['course'=>$course])}}" method="POST">
             @csrf
-            <input type="hidden" name="user_id" value="{{ $user->id }}">
+            <input type="hidden" name="course_id" value="{{ $course->id }}">
             <div class="">
                 <div class="form-group col-md-4">
                     <label for="inputType">Type</label>
-                    <select name='course' id="inputType" class="form-control" >
+                    <select name='user' id="inputType" class="form-control" >
                         <option value="" selected disabled>Choose an Option...</option>
-                        @foreach($courses as $course)
-                            <option value="{{ $course->id }}" @if (old('course')==$course->id) selected @endif>{{$course->name}}</option>
+                        @foreach($users as $user)
+                            @if(UserTypes::getOne($user->type)=='Student')
+                                <option value="{{ $user->id }}" @if (old('user')==$user->id) selected @endif>{{$user->name}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

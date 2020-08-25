@@ -16,3 +16,21 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+
+
+
+
+//Route::resource('users.courses',"API\UserCoursesController")->except(['show']);
+//Route::DELETE('users/{user}/courses/{course}/delete-student',"API\UserCoursesController@destroyStudent")->name('users.courses.destroy.student');
+//Route::get('users/{user}/courses/index-student',"API\UserCoursesController@indexStudent")->name('users.courses.index.student');
+
+Route::prefix('/')->attribute('namespace', 'Api')->group(function () {
+    Route::resource('users',"UserController");
+    Route::post('/register', ['uses' => 'AuthController@register', 'as' => 'api.auth.register']);
+    Route::resource('courses',"CourseController");
+    Route::post('login',"AuthController@login");
+
+});
+

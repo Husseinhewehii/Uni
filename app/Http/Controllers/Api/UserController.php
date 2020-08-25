@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 
 use App\Constants\UserTypes;
@@ -34,19 +34,7 @@ class UserController extends Controller
     }
 
 
-    public function indexProfessors()
-    {
-
-        $users = $this->userRepository->getAll(request())->paginate(10);
-
-        request()->request->set('type', UserTypes::PROFESSOR);
-//        request()->request->set('type', 2);
-        $professors = $this->userRepository->getAll(request())->paginate(10);
-
-        return view('users.professor_index', ['professors' => $professors]);
-    }
-
-    public function indexStudents()
+    public function index()
     {
         $users = $this->userRepository->getAll(request())->paginate(10);
 
@@ -54,7 +42,7 @@ class UserController extends Controller
 //        request()->request->set('type', 2);
         $students = $this->userRepository->getAll(request())->paginate(10);
 
-        return view('users.student_index', [ 'students' => $students]);
+        return response()->json(['users' => $users, 'students' => $students]);
     }
 
     public function show()
@@ -66,12 +54,12 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect('/');
+        response()->json(['user' => $user]);
     }
 
     public function edit(User $user)
     {
-        return view('users.edit', ['user' => $user]);
+        return response()->json(['user' => $user]);
     }
 
     public function create()
@@ -85,25 +73,16 @@ class UserController extends Controller
     {
 
         $this->userServices->createUser($request);
-        return redirect(route('home'));
+        return redirect(route('users.index'));
     }
 
     public function update(CreateUserRequest $request, User $user)
     {
         $this->userServices->updateUser($request, $user);
-        return redirect('/');
+        return redirect(route('users.index'));
     }
 
     public function ajax_form(){
         return view('users.ajax-form');
-    }
-
-    public function goLogin(){
-        return view('users.login');
-    }
-
-    public function indexAdmins()
-    {
-        return view('users.admin_index');
     }
 }

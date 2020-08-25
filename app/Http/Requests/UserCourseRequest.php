@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateCourseRequest extends FormRequest
+class UserCourseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,19 +25,13 @@ class CreateCourseRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name'=>'required|max:255',
-            'start_date' => 'required|date|after:today|before:end_date',
-            'end_date' => 'required|date|after:start_date',
-            'professor_id' => 'required'
+            'course'=>['required', Rule::unique('course_user', 'course_id')->where(function ($query) {
+                return $query->where('user_id', $this->get("user_id"));
+             })
+            ],
+
         ];
 
         return $rules;
-    }
-
-    public function messages()
-    {
-        return [
-            'professor_id.required' => 'Please Specify The Professor'
-        ];
     }
 }

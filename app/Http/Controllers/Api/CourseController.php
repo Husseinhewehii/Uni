@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\Course;
 use App\Constants\UserTypes;
@@ -29,7 +29,8 @@ class CourseController extends Controller
 
     public function index(){
         $courses = $this->courseRepository->getAll()->with('professor')->paginate(10);
-        return view('courses.index',['courses'=>$courses]);
+        //return view('courses.index',['courses'=>$courses]);
+        return response()->json(['courses'=>$courses]);
     }
 
     public function create(){
@@ -49,13 +50,12 @@ class CourseController extends Controller
 //        return redirect(route('courses.index'));
 
     public function store(CreateCourseRequest $request){
-        $this->courseService->createCourse($request);
-        return redirect(route('courses.index'));
+        $new_course = $this->courseService->createCourse($request);
+        return response()->json($new_course);
     }
 
     public function destroy(Course $course){
         $course->delete();
-        return redirect(route('courses.index'));
     }
 
 

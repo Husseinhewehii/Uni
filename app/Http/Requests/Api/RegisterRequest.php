@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCourseRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,20 +23,21 @@ class CreateCourseRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [
+        return [
             'name'=>'required|max:255',
-            'start_date' => 'required|date|after:today|before:end_date',
-            'end_date' => 'required|date|after:start_date',
-            'professor_id' => 'required'
+            'password'=>'required|max:255',
+            'email'=>"required|email|unique:users,email",
+            'confirm_password'=>'required_with:password|same:password',
+            'gender'=>'required',
+            'type'=>'required',
         ];
-
-        return $rules;
     }
 
     public function messages()
     {
         return [
-            'professor_id.required' => 'Please Specify The Professor'
+            'gender.required' => 'Male or Female?',
+            'type.required' => 'Admin or not Admin?'
         ];
     }
 }

@@ -1,9 +1,11 @@
 @extends('layouts.app')
-
+<?php use App\Constants\UserTypes; ?>
 @section('content')
+    <h1 class="">{{UserTypes::getOne($user->type)}}'s Courses, Welcome {{$user->name}}</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
+        <a class="btn btn-success" style="margin: 12px auto;" href="{{route('users.courses.create',['user'=>$user])}}"> Add Course</a>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -11,47 +13,35 @@
                         <table class="table user-list">
                             <thead>
                             <tr>
-                                <th><span>User</span></th>
-                                <th><span>Created</span></th>
+                                <th><span>{{UserTypes::getOne($user->type)}}</span></th>
+                                <th><span>Course</span></th>
 
-                                <th class="text-center"><span>Gender</span></th>
-                                <th class="text-center"><span>Date Of Birth</span></th>
-                                <th><span>Email</span></th>
+                                <th class="text-center"><span>Start Date</span></th>
+                                <th class="text-center"><span>End Date</span></th>
                                 <th>&nbsp;</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($users as $user)
+                            @php $generalCourses = UserTypes::getOne($user->type)=='Student' ? $courses : $professorCourses @endphp
+                            @foreach($generalCourses as $course)
                                 <tr>
                                     <td>
                                         <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
-
-                                        <a href="{{route('users.courses.index',['user'=>$user])}}" class="user-link">{{$user->name}}</a>
-                                        {{$user->type == 1 ? "Admin" : "User"}}
+                                        <h4>{{$user->name}}</h4>
+                                        <h6>{{UserTypes::getOne($user->type)}}</h6>
                                     </td>
                                     <td>
-                                        {{$user->created_at->format('d/m/Y')}}
+                                        <h4><a href="{{route('courses.users.index',['course'=>$course])}}">{{$course->name}}</h4></a>
                                     </td>
 
                                     <td class="text-center">
-
-                                        {{$user->gender == 1 ? "Male" : "Female"}}
+                                        <h5>{{$course->start_date}}</h5>
                                     </td>
                                     <td class="text-center">
-                                       {{$user->date_of_birth ? $user->date_of_birth : "-"}}
-                                    </td>
-                                    <td>
-                                         {{$user->email}}
+                                        <h5>{{$course->end_date}}</h5>
                                     </td>
                                     <td style="width: 10%;">
-                                        <a href="{{ route('users.edit', ['user' => $user]) }}" class="table-link">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil $user->date_of_birthfa-stack-2x fa-inverse"></i>
-                                            </span>
-                                        </a>
-
-                                        <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $user->id }}">
+                                        <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $course->id }}">
                                             <span class="fa-stack">
                                                 <i class="fa fa-square fa-stack-2x"></i>
                                                 <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
@@ -63,13 +53,13 @@
                             </tbody>
                         </table>
                     </div>
-                   {{$users->links()}}
+                    {{--{{$courses->links()}}--}}
                 </div>
             </div>
         </div>
     </div>
-    @foreach ($users as $user)
-        <div class="modal fade" id="removeUser{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    @foreach ($generalCourses as $course)
+        <div class="modal fade" id="removeUser{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -78,7 +68,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('users.destroy', ['user' => $user]) }}" method="Post">
+                    <form action="{{ route('users.courses.destroy.student', [ 'user'=> $user, 'course' => $course]) }}" method="Post">
                         @method('DELETE')
                         @csrf
                         <div class="modal-body">

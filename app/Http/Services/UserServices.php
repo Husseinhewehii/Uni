@@ -55,13 +55,19 @@ class UserServices
 
 
             $course = $request->get('course');
+            if ($user->courses->contains($course))
+            {
+                echo "there is a match";die;
+            }else{
+                $user->courses()->syncWithoutDetaching($course);
+                $user->save();
+
+                return $user;
+            }
 
             //$user->courses->contains($course)
 
-            $user->courses()->syncWithoutDetaching($course);
-            $user->save();
 
-            return $user;
 
         }
     }

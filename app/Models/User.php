@@ -6,10 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable;
+    use HasApiTokens,Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -42,4 +43,28 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Course::class);
     }
+
+    public function professorCourses()
+    {
+        return $this->hasMany(Course::class,'professor_id');
+    }
+
+    public function setPasswordAttribute($pass)
+    {
+        if($pass)
+        {
+            $this->attributes['password'] = \Hash::make($pass);
+        }
+    }
+
+
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleted(function($user) {
+            $user->professorCourses()->delete();
+        });
+    }
+
 }
