@@ -21,6 +21,7 @@ class CourseController extends Controller
 
     public function __construct(UserRepository $userRepository,CourseRepository $courseRepository, CourseServices $courseServices ,UserServices $userServices)
     {
+        $this->authorizeResource(Course::class, "course");
         $this->userRepository = $userRepository;
         $this->userService = $userServices;
         $this->courseRepository = $courseRepository;
@@ -28,11 +29,13 @@ class CourseController extends Controller
     }
 
     public function index(){
+        $this->authorize("view", Course::class);
         $courses = $this->courseRepository->getAll()->with('professor')->paginate(10);
         return view('courses.index',['courses'=>$courses]);
     }
 
     public function create(){
+        //$this->authorize('create',Course::class);
         request()->request->set('type',UserTypes::PROFESSOR);
         $professors = $this->userRepository->getAll(request())->get();
 
@@ -49,6 +52,7 @@ class CourseController extends Controller
 //        return redirect(route('courses.index'));
 
     public function store(CreateCourseRequest $request){
+
         $this->courseService->createCourse($request);
         return redirect(route('courses.index'));
     }

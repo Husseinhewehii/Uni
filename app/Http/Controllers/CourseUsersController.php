@@ -27,6 +27,7 @@ class CourseUsersController extends Controller
     }
 
     public function create(Course $course){
+
         $users = $this->userRepository->getAll(request())->get();
         return view('courses.users.add',['users'=>$users, 'course' => $course]);
     }

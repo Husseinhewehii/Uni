@@ -1,4 +1,5 @@
 @extends('layouts.app')
+<?php use App\Constants\UserTypes; ?>
 @section('content')
     <h1>Edit Account</h1>
     @include('errors')
@@ -38,14 +39,18 @@
                         <option value="2" @if($user->gender == 2) selected @endif>Female</option>
                     </select>
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="inputType">Type</label>
-                    <select name='type' id="inputType" class="form-control" value="{{$user->type}}">
-                        <option selected disabled>Choose an Option...</option>
-                        <option value="1" @if($user->type == 1) selected @endif>Admin</option>
-                        <option value="2" @if($user->type == 2) selected @endif>Not Admin</option>
-                    </select>
-                </div>
+                {{--@if(UserTypes::getOne($user->type) == 'Admin')--}}
+                    <div class="form-group col-md-4">
+                        <label for="inputType">Type</label>
+                        <select name='type' id="inputType" class="form-control" >
+                            <option value="" selected disabled>Choose an Option...</option>
+                            @foreach(UserTypes::getList() as $key => $value)
+                                    <option value="{{ $key }}" @if (old('type')==$key) selected @endif>{{ $value }}</option>
+
+                            @endforeach
+                        </select>
+                    </div>
+                {{--@endif--}}
             </div>
 
 

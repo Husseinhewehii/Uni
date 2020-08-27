@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateCourseRequest extends FormRequest
+class PermissionRequest extends FormRequest
 {
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -23,23 +24,15 @@ class CreateCourseRequest extends FormRequest
      */
     public function rules()
     {
-
         $rules = [
-            'name'=>'required|max:255',
-            'start_date' => 'required|date|after:today|before:end_date',
-            'end_date' => 'required|date|after:start_date',
-
+            'status' => '',
         ];
-        if($this->isMethod("POST")){
-            $rules['professor_id'] = 'required';
+
+        foreach (config()->get("app.locales") as $key => $lang) {
+            $rules[$key . ".*"] = "required";
         }
+
         return $rules;
     }
 
-    public function messages()
-    {
-        return [
-            'professor_id.required' => 'Please Specify The Professor'
-        ];
-    }
 }

@@ -44,19 +44,23 @@
                                         {{--{{$course->students}}--}}
                                     </td>
                                     <td style="width: 10%;">
-                                        <a href="{{ route('courses.edit', ['course'=>$course]) }}" class="table-link">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-pencil $course->date_of_birthfa-stack-2x fa-inverse"></i>
-                                            </span>
-                                        </a>
+                                        @can('update',\App\Models\Course::class)
+                                            <a href="{{ route('courses.edit', ['course'=>$course]) }}" class="table-link">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-pencil $course->date_of_birthfa-stack-2x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        @endcan
 
-                                        <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $course->id }}">
-                                            <span class="fa-stack">
-                                                <i class="fa fa-square fa-stack-2x"></i>
-                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                            </span>
-                                        </a>
+                                        @can('delete',\App\Models\Course::class)
+                                            <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $course->id }}">
+                                                <span class="fa-stack">
+                                                    <i class="fa fa-square fa-stack-2x"></i>
+                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                </span>
+                                            </a>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

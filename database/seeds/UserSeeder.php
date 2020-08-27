@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -11,9 +12,21 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\User::class, 10)->create()->each(function ($users) {
-            $users->save(factory(App\Models\User::class)->make()->toArray());
-        });
+
+        factory(User::class)->create([
+            'name' => 'Bruce Wayne',
+            'email' => 'bruce@wayne.com',
+            'password' =>'test1234',
+            'gender'=> 1,
+            'type'=> 1,
+            'date_of_birth' => '1980-07-11'
+        ]);
+//        factory(User::class, 10)->create();
+
+
+//        factory(App\Models\User::class, 10)->create()->each(function ($users) {
+//            $users->save(factory(App\Models\User::class)->make()->toArray());
+//        });
 
 
 

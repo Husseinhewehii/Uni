@@ -27,5 +27,10 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Passport::routes();
+
+        // this function to make auto-Discover
+        Gate::guessPolicyNamesUsing(function ($modelClass) {
+            return 'App\\Policies\\' . class_basename($modelClass) . "Policy";
+        });
     }
 }

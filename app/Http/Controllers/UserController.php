@@ -34,6 +34,18 @@ class UserController extends Controller
     }
 
 
+    public function indexAdmins()
+    {
+
+        $users = $this->userRepository->getAll(request())->paginate(10);
+
+        request()->request->set('type', UserTypes::ADMIN);
+//        request()->request->set('type', 2);
+        $admins = $this->userRepository->getAll(request())->paginate(10);
+
+        return view('users.admin_index', ['admins' => $admins]);
+    }
+
     public function indexProfessors()
     {
 
@@ -54,7 +66,7 @@ class UserController extends Controller
 //        request()->request->set('type', 2);
         $students = $this->userRepository->getAll(request())->paginate(10);
 
-        return view('users.student_index', [ 'students' => $students]);
+        return view('users.student_index', ['students' => $students]);
     }
 
     public function show()
@@ -94,16 +106,14 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function ajax_form(){
+    public function ajax_form()
+    {
         return view('users.ajax-form');
     }
 
-    public function goLogin(){
+    public function goLogin()
+    {
         return view('users.login');
     }
 
-    public function indexAdmins()
-    {
-        return view('users.admin_index');
-    }
 }

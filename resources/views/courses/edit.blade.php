@@ -9,7 +9,7 @@
             <div class="">
                 <div class="form-group col-md-6">
                     <label for="">Name</label>
-                    <input type="text" placeholder="Name" name="name" class="form-control" value="{{$course->name}}">
+                    <input type="text"  placeholder="Name" name="name" class="form-control" value="{{$course->name}}">
                 </div>
 
                 <div class="form-group col-md-6">

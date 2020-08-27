@@ -27,10 +27,10 @@ class LoginController extends Controller
 
 
 
-        $user = auth()->user();
-        if($user->type == 1){
-            return redirect(route('users.admins'));
-        }
+//        $user = auth()->user();
+//        if($user->type == 1){
+//            return redirect(route('users.admins'));
+//        }
         return redirect('/');
 
     }
