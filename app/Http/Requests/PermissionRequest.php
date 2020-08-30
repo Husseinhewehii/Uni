@@ -25,12 +25,10 @@ class PermissionRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'name'=>'required',
             'status' => '',
         ];
 
-        foreach (config()->get("app.locales") as $key => $lang) {
-            $rules[$key . ".*"] = "required";
-        }
 
         return $rules;
     }

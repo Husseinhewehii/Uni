@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.app')
 
 @section('content')
 <div class="app-content">
@@ -8,8 +8,8 @@
         <div class="page-header">
             <h4 class="page-title">{{ trans('permissions') }}</h4>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('admin.home.index') }}" class="text-light-color">{{ trans('home') }}</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('admin.permissions.index') }}" class="text-light-color">{{ trans('permissions') }}</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-light-color">{{ trans('home') }}</a></li>
+                <li class="breadcrumb-item"><a href="#" class="text-light-color">{{ trans('permissions') }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ trans('update_permissions') }} #{{ $permission->id }}</li>
             </ol>
         </div>
@@ -23,36 +23,24 @@
                             <h4>{{ trans('update_permissions') }}</h4>
                         </div>
                         <div class="card-body">
-                            @include('admin.errors')
-                            <form action="{{ route('admin.permissions.update', ['permission' => $permission]) }}" method="Post" enctype="multipart/form-data" autocomplete="off" >
+
+                            <form action="{{route('permissions.update',['permission'=>$permission])}}" method="post" enctype="multipart/form-data" autocomplete="off" >
                                 @method('PUT')
                                 @csrf
-                                <ul class="nav nav-tabs" role="tablist">
-                                    @foreach(config()->get('app.locales') as $lang => $language)
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ $lang == app()->getLocale() ? 'active': ''}} show" id="home-tab2" data-toggle="tab" href="#lang-{{ $lang }}" role="tab" aria-controls="home" aria-selected="true">{{ $language }}</a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                <div class="tab-content">
-                                    @foreach(config()->get('app.locales') as $lang => $language)
-                                    <div class="tab-pane fade {{ $lang == app()->getLocale() ? 'active show': ''}}" id="lang-{{ $lang }}" role="tabpanel" aria-labelledby="home-tab2">
-                                        <div class="form-group col-md-4">
-                                            <label for="name">{{ trans('name') }}</label>
-                                            <input type="text" class="form-control" name="{{ $lang }}[name]" value="{{ !old( $lang.'.name') ? $permission->translate($lang)->name : old( $lang.'.name') }} " id="{{ $lang }}[name]">
-                                        </div>
-
-                                    </div>
-                                    @endforeach
+                                <div class="form-group col-md-6">
+                                    <label for="">Name</label>
+                                    <input type="text"  placeholder="Name" name="name" class="form-control" value="{{$permission->name}}">
                                 </div>
+
 
                                 <div class="form-group col-md-3">
                                     <label class="custom-switch">
-                                        <input type="checkbox" name="active" value="1" class="custom-switch-input"  {{old("active",$permission->active) == 1 ? "checked" : "" }} >
+                                        <input type="checkbox" name="status" value="1" class="custom-switch-input"  {{old("status",$permission->status) == 1 ? "checked" : "" }} >
                                         <span class="custom-switch-indicator"></span>
-                                        <span class="custom-switch-description">{{ trans('active') }}</span>
+                                        <span class="custom-switch-description">{{ trans('Enable') }}</span>
                                     </label>
                                 </div>
+
                                 <div class="form-group col-md-3">
                                     <button type="submit" class="btn  btn-outline-primary m-b-5  m-t-5"><i class="fa fa-save"></i> {{ trans('save') }}</button>
                                 </div>

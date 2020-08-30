@@ -9,8 +9,6 @@ use App\Http\Requests\PermissionRequest;
 use App\Http\Services\PermissionService;
 use App\repository\PermissionRepository;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
-use View;
 
 class PermissionController extends Controller
 {
@@ -20,7 +18,7 @@ class PermissionController extends Controller
 
     public function __construct(PermissionService $permissionService, PermissionRepository $permissionRepository)
     {
-        //$this->authorizeResource(Permission::class,'permission');
+        $this->authorizeResource(Permission::class,'permission');
         $this->permissionService = $permissionService;
         $this->permissionRepository = $permissionRepository;
     }
@@ -32,7 +30,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $this->authorize('view',Permission::class);
+        $this->authorize('view', Permission::class);
 
         $list = $this->permissionRepository->search(request())->paginate(10);
 
@@ -79,9 +77,10 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Permission $permission)
     {
-        //
+        //$this->authorize('edit',Permission::class);
+        return view('permissions.edit',['permission'=>$permission]);
     }
 
     /**
@@ -91,9 +90,10 @@ class PermissionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PermissionRequest $request, Permission $permission)
     {
-        //
+        $this->permissionService->updatePermission($request,$permission);
+        return redirect(route('permissions.index'));
     }
 
     /**

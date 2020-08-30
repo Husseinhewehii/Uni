@@ -79,14 +79,14 @@
                                         <tr>
                                             <td>{{ $item->id }}</td>
                                             <td>{{ $item->name }}</td>
-                                            <td><span class="badge badge-{{ $item->status ? 'success' : 'danger' }}">{{ $item->status? trans('Enabled') : trans('disabled') }}</span></td>
+                                            <td><span class="badge badge-{{ $item->status ? 'success' : 'danger' }}">{{ $item->status? trans('Enabled') : trans('Disabled') }}</span></td>
                                             <td>
                                                 <div class="btn-group dropdown">
                                                     <button type="button" class="btn btn-sm btn-info m-b-5 m-t-5 dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                         <i class="fa-cog fa"></i>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <a class="dropdown-item has-icon" href="#"><i class="fa fa-edit"></i> {{ trans('edit') }}</a>
+                                                        <a class="dropdown-item has-icon" href="{{route('permissions.edit',['item'=>$item])}}"><i class="fa fa-edit"></i> {{ trans('edit') }}</a>
 
                                                     </div>
                                                 </div>

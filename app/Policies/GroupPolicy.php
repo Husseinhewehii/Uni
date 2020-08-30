@@ -34,9 +34,10 @@ class GroupPolicy
     public function view(User $user)
     {
         if($user->hasAccess('groups.index')){
-            echo 'Wahr';die;
-        }else{
-            echo 'Lugen';die;
+//            echo 'Wahr';die;
+//        }else{
+//            echo 'Lugen';die;
+            return true;
         }
 
     }

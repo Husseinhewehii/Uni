@@ -67,22 +67,28 @@
                 @endcan
 
 
+                @can('view',\App\Models\Group::class)
                 <div class="dropdown">
                     <a class="navbar-brand" href="{{route('groups.index')}}">
                         Groups
                     </a>
-
-                    <li class="nav-item dropdown-content bg-dark">
-                        <a class="nav-link " href="{{ route('groups.create') }}">Create</a>
-                    </li>
+                    @can('create',\App\Models\Group::class)
+                        <li class="nav-item dropdown-content bg-dark">
+                            <a class="nav-link " href="{{ route('groups.create') }}">Create</a>
+                        </li>
+                    @endcan
 
                 </div>
+                @endcan
 
-                <div class="dropdown">
-                    <a class="navbar-brand" href="{{route('permissions.index')}}">
-                        Permissions
-                    </a>
-                </div>
+
+                @can('view',\App\Models\Permission::class)
+                    <div class="dropdown">
+                        <a class="navbar-brand" href="{{route('permissions.index')}}">
+                            Permissions
+                        </a>
+                    </div>
+                @endcan
 
 
 
