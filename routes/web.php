@@ -24,18 +24,30 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('users/index-student',"UserController@indexStudents")->name('users.index.students');
 Route::get('users/index-professor',"UserController@indexProfessors")->name('users.index.professors');
+Route::get('users/index-admin',"UserController@indexAdmins")->name('users.index.admins');
 Route::get('users/login',"UserController@goLogin")->name('users.go.login');
-Route::get('users/index-admin',"UserController@indexAdmins")->name('users.admins');
-//Route::post('users/login',"UserController@login")->name('users.login');
 Route::resource('users',"UserController");
 
+
 Route::resource('courses',"CourseController");
-Route::resource('users.courses',"UserCoursesController")->except(['show']);
+
+
 Route::DELETE('users/{user}/courses/{course}/delete-student',"UserCoursesController@destroyStudent")->name('users.courses.destroy.student');
 Route::delete('users/{user}/courses/{course}/delete-professor',"UserCoursesController@destroyProfessor")->name('users.courses.destroy.professor');
 Route::get('users/{user}/courses/index-student',"UserCoursesController@indexStudent")->name('users.courses.index.student');
 Route::get('users/{user}/courses/index-professor',"UserCoursesController@indexProfessor")->name('users.courses.index.professor');
+Route::resource('users.courses',"UserCoursesController")->except(['show']);
+
+
+
 Route::resource('courses.users',"CourseUsersController");
+
+
+Route::resource('permissions','PermissionController');
+Route::resource('groups','GroupController');
+Route::resource('group.users','GroupUsersController');
+Route::resource('group.permissions','GroupPermissionsController');
+
 
 
 Route::get('/ajax-form', 'ajaxcontroller@ajax_form');

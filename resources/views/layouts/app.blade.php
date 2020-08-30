@@ -18,6 +18,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+
 </head>
 <body>
     <div id="app">
@@ -43,17 +45,52 @@
                         <li >
                             <a class="nav-link " href="{{ route('users.index.professors') }}">Professors</a>
                         </li>
+
+                        <li >
+                            <a class="nav-link " href="{{ route('users.index.admins') }}">Admins</a>
+                        </li>
+
                     </ul>
                 </div>
 
+                @can('view',\App\Models\Course::class)
+                    <div class="dropdown">
+                        <a class="navbar-brand" href="{{route('courses.index')}}">
+                            Courses
+                        </a>
+                        @can('create',\App\Models\Course::class)
+                            <li class="nav-item dropdown-content bg-dark">
+                                <a class="nav-link " href="{{ route('courses.create') }}">Create</a>
+                            </li>
+                        @endcan
+                    </div>
+                @endcan
+
+
+                @can('view',\App\Models\Group::class)
                 <div class="dropdown">
-                    <a class="navbar-brand" href="{{route('courses.index')}}">
-                        Courses
+                    <a class="navbar-brand" href="{{route('groups.index')}}">
+                        Groups
                     </a>
-                    <li class="nav-item dropdown-content bg-dark">
-                        <a class="nav-link " href="{{ route('courses.create') }}">Create</a>
-                    </li>
+                    @can('create',\App\Models\Group::class)
+                        <li class="nav-item dropdown-content bg-dark">
+                            <a class="nav-link " href="{{ route('groups.create') }}">Create</a>
+                        </li>
+                    @endcan
+
                 </div>
+                @endcan
+
+
+                @can('view',\App\Models\Permission::class)
+                    <div class="dropdown">
+                        <a class="navbar-brand" href="{{route('permissions.index')}}">
+                            Permissions
+                        </a>
+                    </div>
+                @endcan
+
+
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -69,9 +106,9 @@
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
+                            {{--<li class="nav-item">--}}
+                                {{--<a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>--}}
+                            {{--</li>--}}
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('users.go.login')}}">Uni Login</a>
                             </li>
@@ -110,5 +147,6 @@
         </main>
     </div>
 
+    @yield('scripts')
 </body>
 </html>

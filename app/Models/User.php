@@ -67,4 +67,39 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function hasAccess($permission): bool
+    {
+        $userPermissions = $this->permissions();
+        return in_array($permission, $userPermissions);
+    }
+
+    /**
+     * @return array
+     */
+    public function permissions() : array
+    {
+        $permissions = $this->query()
+            ->join("group_user", "users.id", "=", "group_user.user_id")
+            ->join("groups", "group_user.group_id", "=", "groups.id")
+            ->join("group_permissions", "groups.id", "=", "group_permissions.group_id")
+            ->join("permissions", "group_permissions.permission_id", "=", "permissions.id")
+            ->select("permissions.identifier")
+            ->where("users.id", "=", auth()->id())
+            ->distinct()
+            ->get();
+
+        $permissionsIdentifier = [];
+        foreach ($permissions as $permission) {
+            $permissionsIdentifier[] = $permission["identifier"];
+        }
+
+
+        return $permissionsIdentifier;
+    }
+
+    public function isTypeOf($userType)
+    {
+        return ($this->type == $userType);
+    }
+
 }

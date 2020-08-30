@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class CreateCourseRequest extends FormRequest
+class GroupUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,23 +24,21 @@ class CreateCourseRequest extends FormRequest
      */
     public function rules()
     {
-
         $rules = [
-            'name'=>'required|max:255',
-            'start_date' => 'required|date|after:today|before:end_date',
-            'end_date' => 'required|date|after:start_date',
+            'user'=>['required', Rule::unique('group_user', 'user_id')->where(function ($query) {
+                return $query->where('group_id', $this->get("group_id"));
+            })
+        ],];
 
-        ];
-        if($this->isMethod("POST")){
-            $rules['professor_id'] = 'required';
-        }
         return $rules;
     }
 
     public function messages()
     {
         return [
-            'professor_id.required' => 'Please Specify The Professor'
+            'user.required' => 'Please Choose an Admin.',
+            'user.unique' => 'This Admin Is Already Registered On This Group.'
         ];
     }
+
 }

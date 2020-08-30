@@ -1,9 +1,11 @@
 @extends('layouts.app')
 <?php use App\Constants\UserTypes; ?>
 @section('content')
+    <h1>Group"{{$group->name}}" Admin</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
+        <a class="btn btn-success" style="margin: 12px auto;" href="{{route('group.users.create',['group'=>$group])}}"> Add Admin</a>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -23,7 +25,7 @@
                             </thead>
                             <tbody>
                             @foreach($admins as $admin)
-                                {{--@if($admin->type == 1)--}}
+                                @if($admin->type == 1)
                                 <tr>
                                     <td>
                                         {{$admin->id}}
@@ -49,12 +51,7 @@
                                         {{$admin->email}}
                                     </td>
                                     <td style="width: 10%;">
-                                        <a href="{{ route('users.edit', ['user' => $admin]) }}" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil $user->date_of_birthfa-stack-2x fa-inverse"></i>
-                                                </span>
-                                        </a>
+
 
                                         <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $admin->id }}">
                                                 <span class="fa-stack">
@@ -64,12 +61,12 @@
                                         </a>
                                     </td>
                                 </tr>
-                                {{--@endif--}}
+                                @endif
                             @endforeach
                             </tbody>
                         </table>
                     </div>
-                    {{$admins->links()}}
+                    {{--{{$admins->links()}}--}}
                 </div>
             </div>
         </div>
@@ -79,20 +76,20 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">{{trans('delete')}}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <h5 class="modal-title" id="exampleModalLongTitle">{{trans('Warning')}}</h5>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{ route('users.destroy', ['user' => $admin]) }}" method="Post">
+                    <form action="{{ route('group.users.destroy', ['group'=>$group,'user' => $admin]) }}" method="Post">
                         @method('DELETE')
                         @csrf
                         <div class="modal-body">
-                            <p class="mb-0">{{trans('Delete?')}}</p>
+                            <p class="mb-0">{{trans('Remove Admin From Group?')}}</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary" data-dismiss="modal">{{trans('Cancel')}}</button>
-                            <button type="submit" class="btn btn-danger"> {{trans('Delete')}}</button>
+                            <button type="submit" class="btn btn-danger"> {{trans('Remove')}}</button>
                         </div>
                     </form>
                 </div>
