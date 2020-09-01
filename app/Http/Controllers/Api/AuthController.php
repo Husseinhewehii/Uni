@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use app\Http\Services\UserServices;
+use App\repository\CourseRepository;
 use Illuminate\Routing\Controller;
 use App\Http\Services\AuthService;
 use App\Http\Requests\Api\RegisterRequest;
@@ -10,6 +12,17 @@ use Auth;
 
 class AuthController extends Controller
 {
+
+    private $courseRepository;
+    private $userServices;
+
+    public function __construct(CourseRepository $courseRepository)
+    {
+        $this->courseRepository = $courseRepository;
+
+
+    }
+
     public function register(RegisterRequest $request)
     {
         $authService = new AuthService;
@@ -28,8 +41,10 @@ class AuthController extends Controller
             return response(['message' => 'Invalid Login Credentials']);
         }
 
+        //passport install is required
         $accessToken = Auth::user()->createToken('authToken')->accessToken;
 
         return response(['user'=> Auth::user(), 'access_token'=> $accessToken]);
+
     }
 }

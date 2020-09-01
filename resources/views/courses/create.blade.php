@@ -18,7 +18,7 @@
                         <option value="" selected disabled>Choose an Option...</option>
 
                         @foreach($professors as $professor)
-                            <option value="{{ $professor->id }}" @if (old('professor')==$professor->id)  selected @elseif (request("user") == $professor->id) selected  @endif>{{ $professor->name }}</option>
+                            <option value="{{ $professor->id }}" @if (old('professor_id')==$professor->id)  selected @elseif (request("user") == $professor->id) selected  @endif>{{ $professor->name }}</option>
                         @endforeach
                     </select>
                 </div>
