@@ -6,6 +6,8 @@ use App\Models\Course;
 use Illuminate\Http\Request;
 use App\repository\CourseRepository;
 
+use Hash,Redirect;
+
 
 
 class UserServices
@@ -69,5 +71,29 @@ class UserServices
 
 
 
+        }
+
+        public function changePassword(Request $request, User $user)
+        {
+            if (!$user) {
+                return false;
+            }
+//            $currentPassword = $request->input('old_password');
+//            if (!Hash::check($currentPassword, $user->password)) {
+//
+//
+//                //return redirect(route('users.password.go.change',['user'=>$user]))->with('danger','Incorrect old Passwort');
+////                return Redirect::back()->withErrors(['msg', 'The Message']);
+////                return false;
+//////              return response()->json(array('error' => 'Incorrect old Passwort'), 400);
+/////
+/////
+/////               return redirect()->back()->with('danger', 'Incorrect old Passwort');
+////               echo "$user->name wrong pass  test123456  ";die;
+//
+//            }
+            $user->password = $request->input('new_password');
+            $user->save();
+            return $user;
         }
     }

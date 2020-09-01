@@ -30,7 +30,16 @@ Route::prefix('/')->attribute('namespace', 'Api')->group(function () {
     Route::resource('users',"UserController");
     Route::post('/register', ['uses' => 'AuthController@register', 'as' => 'api.auth.register']);
     Route::resource('courses',"CourseController");
-    Route::post('login',"AuthController@login");
+    Route::post('/login',"AuthController@login");
+    Route::post('/users/password-reset',"UserController@sendPasswordResetLink");
+
+
+});
+Route::prefix('/')->attribute('namespace', 'Api')->middleware('auth:api')->group(function () {
+    Route::resource('users',"UserController");
+    //Route::get('/user-update',"UserController@update")->name('api.user.update');
+    Route::get('/student-courses',"UserController@studentCourses")->name('api.student.courses');
 
 });
 
+//Route::post('login-custom','LoginController@login')->name('login.custom');

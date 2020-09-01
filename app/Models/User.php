@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
+use Hash;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -53,9 +54,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         if($pass)
         {
-            $this->attributes['password'] = \Hash::make($pass);
+            $this->attributes['password'] = Hash::make($pass);
         }
     }
+
+//    public function setPasswordAttribute($password)
+//    {
+//        if ( $password !== null & $password !== "" )
+//        {
+//            $this->attributes['password'] = bcrypt($password);
+//        }
+//    }
 
 
 

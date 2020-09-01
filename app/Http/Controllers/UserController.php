@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 
 use App\Constants\UserTypes;
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\ConfirmResetPasswordRequest;
 use App\repository\UserRepository;
 use App\Http\Services\UserServices;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\User;
-
+use Password, Str, Auth;
+use Hash;
 
 
 class UserController extends Controller
@@ -115,5 +119,63 @@ class UserController extends Controller
     {
         return view('users.login');
     }
+
+    public function forgotPassword()
+    {
+        return view('users.forgot_password');
+    }
+
+    public function sendPasswordResetLink(ResetPasswordRequest $request)
+    {
+        $email = $request->email;
+        Password::broker()->sendResetLink(
+            $request->only('email')
+        );
+        //  session()->flash('success', trans('passwords.sent'));
+        return view('users.password_reset_confirmation',['email'=>$email]);
+    }
+
+    public function resetPassword(ConfirmResetPasswordRequest $request)
+    {
+        $response = Password::broker()->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function (User $user, $password) {
+//                $user->password = Hash::make($password);
+                $user->password = $password;
+                $user->setRememberToken(Str::random(60));
+                $user->save();
+
+                //event(new PasswordReset($user));
+
+                Auth::guard()->login($user);
+            }
+        );
+
+        if ($response != Password::PASSWORD_RESET) {
+            return redirect()->back()->with('error', trans($response));
+        }
+
+        return redirect('/');
+    }
+
+    public function goReset(Request $request)
+    {
+            if ($request->query->has('token')) {
+                return view('users.resetter');
+            }
+
+
+        return view('users.reset_password');
+    }
+
+    public function goChangePassword(User $user){
+        return view('users.change_password',['user'=>$user]);
+    }
+
+    public function updatePassword(ChangePasswordRequest $request,User $user){
+        $this->userServices->changePassword($request, $user);
+        return redirect('/')->with('success', 'password_updated_successfully');
+    }
+
 
 }

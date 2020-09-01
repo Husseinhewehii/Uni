@@ -3,6 +3,8 @@
 namespace App\Models;
 
 //use Illuminate\Notifications\Notifiable;
+use App\Events\CourseCreatedEvent;
+use App\Events\CourseDeletedEvent;
 use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
@@ -26,5 +28,12 @@ class Course extends Model
     public function professor(){
         return $this->belongsTo(User::class, 'professor_id' );
     }
+
+    public $dispatchesEvents = [
+
+        'deleted' => CourseDeletedEvent::class,
+        'created' => CourseCreatedEvent::class
+
+    ];
 
 }

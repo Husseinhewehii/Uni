@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Constants\UserTypes;
+use App\Http\Requests\Api\LoginRequest;
+use App\Http\Requests\ResetPasswordRequest;
 use App\repository\UserRepository;
 use App\Http\Services\UserServices;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateUserRequest;
 use App\Models\User;
-
+use Auth, Password;
 
 
 class UserController extends Controller
@@ -76,13 +78,31 @@ class UserController extends Controller
         return redirect(route('users.index'));
     }
 
-    public function update(CreateUserRequest $request, User $user)
+    public function update(CreateUserRequest $request)
     {
-        $this->userServices->updateUser($request, $user);
-        return redirect(route('users.index'));
+        $this->userServices->updateUser($request, Auth::user());
+        return response(['user'=>Auth::user()]);
+
     }
 
     public function ajax_form(){
         return view('users.ajax-form');
+    }
+
+    public function studentCourses()
+    {
+        $courses = Auth::user()->courses;
+
+        return response(['courses' => $courses]);
+    }
+
+    public function sendPasswordResetLink(ResetPasswordRequest $request)
+    {
+        $email = $request->email;
+        Password::broker()->sendResetLink(
+            $request->only('email')
+        );
+        //  session()->flash('success', trans('passwords.sent'));
+        return response(['message'=>"email sent to $email"]);
     }
 }
