@@ -4,7 +4,7 @@
     <h1>Edit Account</h1>
     @include('errors')
     <div class="container">
-        <form action="{{ route('users.update',['user'=>$user]) }}" method="post">
+        <form action="{{ route('users.update',['user'=>$user]) }}" method="post" enctype="multipart/form-data">
             @method('PUT')
             @csrf
             <div class="form-row">
@@ -15,8 +15,16 @@
                 </div>
 
                 <div class="form-group col-md-6">
+                    <label for="">Image</label>
+                    <div class="container">
+                        <img style="width:120px; height: 80px;" src="{{asset($user->image)}}" alt="No Image">
+                        <input type="file" placeholder="Image" name="image"  value="{{$user->image}}">
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
                     <label for="inputPassword">Password</label>
-                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password">
+                    <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Password" >
                 </div>
 
                 <div class="form-group col-md-6">
@@ -45,8 +53,7 @@
                         <select name='type' id="inputType" class="form-control" >
                             <option value="" selected disabled>Choose an Option...</option>
                             @foreach(UserTypes::getList() as $key => $value)
-                                    <option value="{{ $key }}" @if (old('type')==$key) selected @endif>{{ $value }}</option>
-
+                                    <option value="{{ $key }}" @if ($user->type==$key) selected  @endif>{{ $value }}</option>
                             @endforeach
                         </select>
                     </div>

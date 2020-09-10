@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Review;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
@@ -13,14 +14,17 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens,Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','date_of_birth','type','gender'
+        'image','name', 'email', 'password','date_of_birth','type','gender'
     ];
+
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -31,6 +35,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'password', 'remember_token',
     ];
 
+
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -39,6 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
 
     public function courses()
     {
@@ -50,11 +58,26 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Course::class,'professor_id');
     }
 
+
+    public function gallery()
+    {
+        return $this->hasMany(Gallery::class,'user_id');
+    }
+
+
+    public function reviews()
+    {
+        return $this->morphMany(Review::class,'reviewable');
+    }
+
+
+
+
     public function setPasswordAttribute($pass)
     {
         if($pass)
         {
-            $this->attributes['password'] = Hash::make($pass);
+            $this->attributes['password'] = Hash::needsRehash($pass) ? Hash::make($pass) : $pass;
         }
     }
 
@@ -68,13 +91,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
-    public static function boot() {
-        parent::boot();
 
-        static::deleted(function($user) {
-            $user->professorCourses()->delete();
-        });
-    }
+
 
     public function hasAccess($permission): bool
     {
@@ -109,6 +127,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isTypeOf($userType)
     {
         return ($this->type == $userType);
+    }
+
+
+
+    public static function boot() {
+        parent::boot();
+
+        static::deleted(function($user) {
+            $user->professorCourses()->delete();
+        });
     }
 
 }

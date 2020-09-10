@@ -35,7 +35,17 @@ Route::post('/password/change/{user}','UserController@updatePassword')->name('us
 Route::resource('users',"UserController");
 
 
+Route::get('export', 'MyController@export')->name('export');
+Route::get('importExportView', 'MyController@importExportView')->name('users.go.import');
+Route::post('import', 'MyController@import')->name('import');
+
+
 Route::resource('courses',"CourseController");
+Route::get('course-export-pdf/{course}/{form}',"CourseController@exportPDF")->name('course.export.pdf');
+
+Route::get('courses-export-excel', 'CourseController@exportExcel')->name('courses.export.excel');
+//Route::get('importExportView', 'CourseController@importExportView');
+//Route::post('course-import-excel', 'CourseController@importExcel')->name('course.import.excel');
 
 
 Route::DELETE('users/{user}/courses/{course}/delete-student',"UserCoursesController@destroyStudent")->name('users.courses.destroy.student');
@@ -48,6 +58,12 @@ Route::resource('users.courses',"UserCoursesController")->except(['show']);
 
 
 Route::resource('courses.users',"CourseUsersController");
+Route::get('course-users-export-excel/{course}','CourseUsersController@exportExcel')->name('course.users.export.excel');
+
+Route::resource('course.reviews',"CourseReviewController");
+
+
+Route::resource('user.gallery','UserGalleryController');
 
 
 Route::resource('permissions','PermissionController');
@@ -57,8 +73,8 @@ Route::resource('group.permissions','GroupPermissionsController');
 
 
 
-Route::get('/ajax-form', 'ajaxcontroller@ajax_form');
-Route::post('/ajax', 'ajaxcontroller@ajax');
+//Route::get('/ajax-form', 'ajaxcontroller@ajax_form');
+//Route::post('/ajax', 'ajaxcontroller@ajax');
 
 
 Route::post('login/custom','LoginController@login')->name('login.custom');

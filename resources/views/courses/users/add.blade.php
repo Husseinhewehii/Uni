@@ -19,20 +19,20 @@
                         @endforeach
                     </select>
                 </div>
-            <button id='submit' onclick="popIt()" type="submit" class="btn btn-primary" >Add</button>
+            <button id='submit' type="submit" class="btn btn-primary" >Add</button>
                 <br>
 
         </form>
 
     </div>
     <div class="alert alert-success" style="display:none;"></div>
-    {{--<script>--}}
-        {{--function popIt() {--}}
-            {{--alert('thank you')--}}
-        {{--}--}}
-    {{--</script>--}}
+    <script>
+        function popIt() {
+            alert('thank you')
+        }
+    </script>
 
-@endsection('content')
+@endsection
 {{--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous"></script>--}}
 {{--<script>--}}
     {{--$(document).ready(function(){--}}

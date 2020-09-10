@@ -5,9 +5,13 @@
     <h1>Create Account</h1>
     @include('errors')
     <div class="container">
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="">
+                <div class="form-group col-md-6">
+                    <label for="">Profile Image</label>
+                    <input type="file" placeholder="Upload Image" name="image" class="form-control" >
+                </div>
                 <div class="form-group col-md-6">
                     <label for="">Name</label>
                     <input type="text" placeholder="Name" name="name" class="form-control" value="{{old('name')}}">

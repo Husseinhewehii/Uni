@@ -1,9 +1,11 @@
 @extends('layouts.app')
+<?php use App\Constants\PDFFormTypes; ?>
 @section('content')
     <h1>courses</h1>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
+        <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('courses.export.excel')}}">Export Courses</a>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -15,8 +17,14 @@
                                 <th><span>Professor</span></th>
                                 <th class="text-center"><span>Start Date</span></th>
                                 <th class="text-center"><span>End Date</span></th>
-                                <th><span>Students Enrolled</span></th>
-                                <th>&nbsp;</th>
+                                <th><span>Reviews(Average Rate)</span></th>
+                                @can('update',\App\Models\Course::class)
+                                    <th>&nbsp;</th>
+                                @endcan
+
+                                @can('delete',\App\Models\Course::class)
+                                    <th>&nbsp;</th>
+                                @endcan
                             </tr>
                             </thead>
                             <tbody>
@@ -41,28 +49,56 @@
                                         {{$course->end_date}}
                                     </td>
                                     <td class="text-center">
-                                        {{--{{$course->students}}--}}
+                                        {{--@php $x=0; @endphp--}}
+                                        {{--@foreach($course->reviews as $review)--}}
+                                            {{--@php $x+=$review->rate @endphp--}}
+                                        {{--@endforeach--}}
+                                        {{--<a href="{{ route('course.reviews.index',['course'=>$course]) }}" class="user-link">Reviews({{$course->reviews->count() >=1 ? $x/$course->reviews->count() : 'No Reviews'}})</a>--}}
+                                        <a href="{{ route('course.reviews.index',['course'=>$course]) }}" class="user-link">Reviews ({{$course->reviews->count() >= 1 ? $course->calculateAverageCourseRate() : 'No Reviews'}})</a>
                                     </td>
-                                    <td style="width: 10%;">
-                                        @can('update',\App\Models\Course::class)
-                                            <a href="{{ route('courses.edit', ['course'=>$course]) }}" class="table-link">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-pencil $course->date_of_birthfa-stack-2x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        @endcan
+                                    {{--@if(auth()->user()->hasAccess("courses.update") || auth()->user()->hasAccess("courses.destroy"))--}}
+                                        <td style="width: 10%;">
+                                            @can('update',\App\Models\Course::class)
+                                                <a href="{{ route('courses.edit', ['course'=>$course]) }}" class="table-link">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil $course->date_of_birthfa-stack-2x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                            @endcan
 
-                                        @can('delete',\App\Models\Course::class)
-                                            <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $course->id }}">
-                                                <span class="fa-stack">
-                                                    <i class="fa fa-square fa-stack-2x"></i>
-                                                    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
-                                                </span>
-                                            </a>
-                                        @endcan
-                                    </td>
+                                            @can('delete',\App\Models\Course::class)
+                                                <a class="table-link danger" data-toggle="modal" data-target="#removeUser{{ $course->id }}">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                            @endcan
+                                                <a data-target="#chooseForm{{ $course->id }}" class="btn btn-success table-link" style="margin: 10px;" data-toggle="modal">Export Course</a>
+                                        </td>
+                                    {{--@endif--}}
+
                                 </tr>
+                                <div class="modal fade" id="chooseForm{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Choose Form</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <ul>
+                                                    @foreach(PDFFormTypes::getList() as $key => $value)
+                                                        <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('course.export.pdf',['course'=>$course,'form_number'=>$value])}}">Form {{$key}}</a>
+                                                    @endforeach
+                                               </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                             </tbody>
                         </table>
@@ -72,6 +108,7 @@
             </div>
         </div>
     </div>
+
     @foreach ($courses as $course)
         <div class="modal fade" id="removeUser{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">

@@ -20,9 +20,9 @@ class CoursePolicy
     public function before(User $user)
     {
         // check if the user is not admin return false before access any rolls
-        if(!$user->isTypeOf(UserTypes::ADMIN)){
-            return false;
-        }
+//        if(!$user->isTypeOf(UserTypes::ADMIN)){
+//            return false;
+//        }
     }
 
     /**
@@ -34,7 +34,8 @@ class CoursePolicy
      */
     public function view(User $user)
     {
-        return $user->hasAccess('courses.index');
+//        return $user->hasAccess('courses.index');
+
     }
 
     /**
