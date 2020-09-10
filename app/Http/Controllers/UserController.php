@@ -82,7 +82,7 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect('/');
+        return redirect()->back()->with('danger',"User:$user->id ($user->name) has just been deleted successfully");
     }
 
     public function edit(User $user)
@@ -99,7 +99,6 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-
         $this->userServices->createUser($request);
         return redirect(route('home'));
     }

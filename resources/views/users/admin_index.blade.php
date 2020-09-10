@@ -29,8 +29,11 @@
                                         {{$admin->id}}
                                     </td>
                                     <td>
-                                        <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
-
+                                        @if($admin->image)
+                                            <img style="width:120px; height: 80px;" src="{{asset($admin->image)  }}" alt="not uploaded">
+                                        @else
+                                            <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
+                                        @endif
                                         <a href="#" class="user-link">{{$admin->name}}</a>
                                         {{UserTypes::getOne($admin->type)}}
                                     </td>

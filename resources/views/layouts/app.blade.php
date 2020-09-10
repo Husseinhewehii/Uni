@@ -53,7 +53,7 @@
                     </ul>
                 </div>
 
-                @can('view',\App\Models\Course::class)
+
                     <div class="dropdown">
                         <a class="navbar-brand" href="{{route('courses.index')}}">
                             Courses
@@ -64,7 +64,7 @@
                             </li>
                         @endcan
                     </div>
-                @endcan
+
 
 
                 @can('view',\App\Models\Group::class)

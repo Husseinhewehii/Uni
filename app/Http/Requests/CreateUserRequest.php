@@ -23,17 +23,24 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
+        $password_rule = 'min:8|max:255';
 
         $rules =  [
             'name'=>'required|max:255',
-            'password'=>'required|max:255',
-            'confirm_password'=>'required_with:password|same:password',
             'gender'=>'required',
             'type'=>'required',
         ];
 
         if ($this->isMethod("POST")) {
             $rules["email"] = "required|email|unique:users,email";
+            $rules["password"] = $password_rule;
+        }
+        if ($this->isMethod("PUT")) {
+            if($this->password){
+                $rules["password"] = $password_rule;
+
+            }
+
         }
 
         return $rules;

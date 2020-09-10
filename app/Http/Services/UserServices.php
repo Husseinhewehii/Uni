@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\repository\CourseRepository;
+use App\Http\Services\UploaderService;
 
 use Hash,Redirect;
 
@@ -14,15 +15,23 @@ class UserServices
     {
         protected $user;
         private $courseRepository;
+        private $uploaderService;
 
-            public function __construct(User $user, CourseRepository $courseRepository)
+            public function __construct(User $user, CourseRepository $courseRepository, UploaderService $uploaderService)
         {
             $this->user = $user;
             $this->courseRepository = $courseRepository;
-
+            $this->uploaderService = $uploaderService;
         }
 
         public function updateUser(Request $request, User $user){
+
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $img = $this->uploaderService->upload($file,'users');
+                $user->image = $img;
+            }
+
 
             $user->fill($request->request->all());
             $user->save();
@@ -41,8 +50,16 @@ class UserServices
 ////            'type'=>'required',
 ////            'email' => 'required|email|unique:users,email'
 ////        ));
+///
 
             $user = new User();
+
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $img = $this->uploaderService->upload($file,'users');
+                $user->image = $img;
+            }
+
             $user->fill($request->request->all());
             $user->save();
 
@@ -71,6 +88,19 @@ class UserServices
 
 
 
+        }
+
+        public function addImage(Request $request, User $user)
+        {
+            if($request->hasFile('image')){
+                $file = $request->file('image');
+                $img = $this->uploaderService->upload($file,'user_gallery');
+            }
+            $data = $request->all();
+            $data['image'] = $img;
+            $user->gallery()->create($data);
+            $user->save();
+            return $user;
         }
 
         public function changePassword(Request $request, User $user)

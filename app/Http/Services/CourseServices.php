@@ -7,26 +7,27 @@ use app\Http\Requests\CreateCourseRequest;
 
 
 class CourseServices
+{
+    protected $course;
+
+    public function __construct(Course $course)
     {
-        protected $course;
+        $this->course = $course;
 
-            public function __construct(Course $course)
-        {
-            $this->course = $course;
+    }
 
-        }
+    public function updateCourse(Request $request, Course $course)
+    {
 
-        public function updateCourse(Request $request, Course $course){
+        $course->fill($request->request->all());
+        $course->save();
 
-            $course->fill($request->request->all());
-            $course->save();
+        return $course;
 
-            return $course;
+    }
 
-        }
-
-        public function createCourse(Request $request)
-        {
+    public function createCourse(Request $request)
+    {
 //            $request->validate(array(
 ////            'name'=>'required|max:255',
 ////            'password'=>'required|max:255',
@@ -36,13 +37,13 @@ class CourseServices
 ////            'email' => 'required|email|unique:users,email'
 ////        ));
 
-            $course = new Course();
-            $course->fill($request->request->all());
-            $course->save();
+        $course = new Course();
+        $course->fill($request->request->all());
+        $course->save();
 
-            return $course;
+        return $course;
 
-        }
+    }
 
     public function createUser(Request $request, Course $course)
     {
@@ -51,10 +52,10 @@ class CourseServices
 
 
         $user = $request->get('user');
-        if ($course->users->contains($user))
-        {
-            echo "there is a match";die;
-        }else{
+        if ($course->users->contains($user)) {
+            echo "there is a match";
+            die;
+        } else {
             $course->users()->syncWithoutDetaching($user);
             $course->save();
 
@@ -64,6 +65,17 @@ class CourseServices
         //$user->courses->contains($course)
 
 
+    }
 
-    }
-    }
+//    public function calculateAverageCourseRate(Course $course){
+//        if($course->reviews()){
+//            $rateSum = 0;
+//            foreach($course->reviews as $review){
+//                $rateSum += $review->rate;
+//            }
+//            $averageRate = truncate_number($rateSum/$course->reviews->count(),2);
+//            return $averageRate;
+//        }
+//    }
+
+}

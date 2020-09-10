@@ -4,6 +4,18 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
+        <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('users.go.import')}}">Import Students</a>
+        <div class="container" >
+            @if(session()->has('success'))
+                <div class="card" id='review_added_successfully' >
+                    {{session('success')}}
+                </div>
+            @elseif(session()->has('danger'))
+                <div class="card" id='review_deleted_successfully' >
+                    {{session('danger')}}
+                </div>
+            @endif
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">
@@ -18,6 +30,7 @@
                                 <th class="text-center"><span>Gender</span></th>
                                 <th class="text-center"><span>Date Of Birth</span></th>
                                 <th><span>Email</span></th>
+                                <th><span>Gallery</span></th>
                                 <th>&nbsp;</th>
                             </tr>
                             </thead>
@@ -29,7 +42,11 @@
                                             {{$student->id}}
                                         </td>
                                         <td>
-                                            <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
+                                            @if($student->image)
+                                                <img src="{{asset($student->image)  }}" alt="not uploaded" style="width:120px; height: 80px;">
+                                            @else
+                                                <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
+                                            @endif
 
                                             <a href="{{route('users.courses.index.student',['user'=>$student])}}" class="user-link">{{$student->name}}</a>
                                             {{UserTypes::getOne($student->type)}}
@@ -47,6 +64,9 @@
                                         </td>
                                         <td>
                                              {{$student->email}}
+                                        </td>
+                                        <td>
+                                            <a href="{{route('user.gallery.index',['student'=>$student])}}">Gallery</a>
                                         </td>
                                         <td style="width: 10%;">
                                             <a href="{{ route('users.edit', ['user' => $student]) }}" class="table-link">

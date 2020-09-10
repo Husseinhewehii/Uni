@@ -18,6 +18,7 @@
                                 <th class="text-center"><span>Gender</span></th>
                                 <th class="text-center"><span>Date Of Birth</span></th>
                                 <th><span>Email</span></th>
+                                <th><span>Gallery</span></th>
                                 <th>&nbsp;</th>
                             </tr>
                             </thead>
@@ -29,8 +30,11 @@
                                             {{$professor->id}}
                                         </td>
                                         <td>
-                                            <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
-
+                                            @if($professor->image)
+                                                <img style="width:120px; height: 80px;" src="{{asset($professor->image)  }}" alt="not uploaded">
+                                            @else
+                                                <img src="https://e7.pngegg.com/pngimages/743/752/png-clipart-computer-icons-personally-identifiable-information-icon-design-symbol-a-new-user-miscellaneous-cdr.png" alt="">
+                                            @endif
                                             <a href="{{route('users.courses.index.professor',['user'=>$professor])}}" class="user-link">{{$professor->name}}</a>
                                             {{UserTypes::getOne($professor->type)}}
                                         </td>
@@ -47,6 +51,9 @@
                                         </td>
                                         <td>
                                              {{$professor->email}}
+                                        </td>
+                                        <td>
+                                            <a href="#">{{$professor->gallery ? 'Gallery' : 'Add Gallery'}}</a>
                                         </td>
                                         <td style="width: 10%;">
                                             <a href="{{ route('users.edit', ['user' => $professor]) }}" class="table-link">

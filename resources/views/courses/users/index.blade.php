@@ -11,6 +11,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
+        <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('course.users.export.excel',['course'=>$course])}}">Export Course</a>
         <a class="btn btn-success" style="margin: 12px auto;" href="{{route('courses.users.create',['course'=>$course])}}"> Add Student</a>
         <div class="row">
             <div class="col-lg-12">

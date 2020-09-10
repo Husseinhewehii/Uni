@@ -10939,3 +10939,44 @@ dropdown {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+#back_to_reviews{
+    color:white;
+}
+
+#back_to_reviews:hover{
+    text-decoration:none;
+}
+
+#review_added_successfully{
+    align-content: center;
+    text-align: center;
+    font-size: 17px;
+    color:white;
+    background: #33e02c;
+    width:30%;
+}
+
+#review_deleted_successfully{
+    align-content: center;
+    text-align: center;
+    font-size: 17px;
+    color:white;
+    background: #f2453f;
+    width:30%;
+}
+
+#container {
+    overflow: visible;
+    position: relative;
+    width:50%;
+}
+
+#x {
+    position: absolute;
+    border-radius: 50%;
+    background: grey;
+    color: white;
+    top: -10px;
+    right: -10px;
+}
