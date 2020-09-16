@@ -80,7 +80,12 @@ return [
     |
     */
 
+
     'locale' => 'en',
+//    'locales' => [
+//        'en' => 'English',
+//        'de' => 'German'
+//    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -175,11 +180,12 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        //App\Providers\RepositoryServiceProvider::class,
-
+//        App\Providers\RepositoryServiceProvider::class,
+//        BeyondCode\LaravelWebSockets\Statistics\Logger\HttpStatisticsLogger::class,
+//        BeyondCode\LaravelWebSockets\Apps\ConfigAppProvider::class
     ],
 
     /*

@@ -25,10 +25,16 @@
         <!--},-->
         <!--mounted() {-->
 
-            <!--Echo.private(`App.User.${userId}`)-->
-                <!--.notification((notification) => {-->
-                    <!--console.log(notification.type);-->
+            <!--Echo.private('user_notifications')-->
+                <!--.listen('TaskCompletedEvent', (e) => {-->
+                    <!--console.log(e.user);-->
                 <!--});-->
+
+            <!--//-->
+            <!--// Echo.private(`App.User.${userId}`)-->
+            <!--//     .notification((notification) => {-->
+            <!--//         console.log(notification.type);-->
+            <!--//     });-->
 
             <!--// Echo.join('notifacations')-->
             <!--//     .here((notifications)=>{-->
@@ -41,16 +47,7 @@
             <!--//         this.notifications.splice(this.notifications.indexOf(notification,1))-->
             <!--//     })-->
 
-            <!--// Echo.join('chat')-->
-            <!--//     .here((users) => {-->
-            <!--//         console.log(users);-->
-            <!--//     })-->
-            <!--//     .joining((user) => {-->
-            <!--//         console.log(user.name);-->
-            <!--//     })-->
-            <!--//     .leaving((user) => {-->
-            <!--//         console.log(user.name);-->
-            <!--//     });-->
+
         <!--}-->
     <!--}-->
 <!--</script>-->

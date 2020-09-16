@@ -1,5 +1,13 @@
 <?php
 
+use App\Jobs\SendEmailJob;
+use App\Jobs\PrinterJob;
+
+use Carbon\Carbon;
+use App\Notifications\Benachrichtigung;
+use App\Models\User;
+use App\Events\BenachrichtigungEvent;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,13 +19,15 @@
 |
 */
 
-Route::get('/', function () {
+
+
+Route::get('', function () {
     return view('welcome');
-});
+})->name('home');
 
 Auth::routes(['verify'=>true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/logged-in', 'HomeController@index')->name('logged_in');
 
 
 
@@ -46,6 +56,7 @@ Route::get('course-export-pdf/{course}/{form}',"CourseController@exportPDF")->na
 Route::get('courses-export-excel', 'CourseController@exportExcel')->name('courses.export.excel');
 //Route::get('importExportView', 'CourseController@importExportView');
 //Route::post('course-import-excel', 'CourseController@importExcel')->name('course.import.excel');
+Route::get('courses-insert-twenties', 'CourseController@courseInsert')->name('courses.insert.twenties');
 
 
 Route::DELETE('users/{user}/courses/{course}/delete-student',"UserCoursesController@destroyStudent")->name('users.courses.destroy.student');
@@ -73,15 +84,92 @@ Route::resource('group.permissions','GroupPermissionsController');
 
 
 
-//Route::get('/ajax-form', 'ajaxcontroller@ajax_form');
-//Route::post('/ajax', 'ajaxcontroller@ajax');
-
-
 Route::post('login/custom','LoginController@login')->name('login.custom');
 
 Route::get('logs','LogsController@index')->name('logs.index');
 
-//Route::group(['middleware'=>'auth'],function (){
+
+
+
+
+//----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+//Route::get('insert_many_courses',function(){
 //
+//    $job = (new InsertCourses);
+//    dispatch($job);
+//    return redirect()->back();
+//})->name('insert_many_courses');
+
+
+
+
+
+
+
+
+
+
+
+//Route::get('/ajax-form', 'ajaxcontroller@ajax_form');
+//Route::post('/ajax', 'ajaxcontroller@ajax');
+
+//Route::get('send-email',function(){
+//
+//    $job = (new SendEmailJob())->delay(Carbon::now()->addSeconds(15));
+//    dispatch($job);
+//    return 'email has just been sent';
 //});
 
+//Route::get('print-something',function(){
+//
+//    $job = (new PrinterJob);
+//    dispatch($job);
+//    return '100000 users added';
+//});
+
+
+Route::get('send-notification',function(){
+    $user = auth()->user();
+    $user->notify(new Benachrichtigung($user));
+    event(new BenachrichtigungEvent($user));
+    return redirect()->back();
+})->name('send_notification');
+
+Route::get('mark-as-read',function (){
+    $user = auth()->user();
+    $user->unreadNotifications->markAsRead();
+    return redirect()->back();
+})->name('mark_read');
+//
+
+//
+//Route::group(['prefix' => '{language}'],function(){
+//
+//    Route::get('home', function () {
+//        return view('welcome');
+//    })->name('welcome');
+//
+//    Route::get('translate',function (){
+////        App::setlocale('de');
+////    echo App::getLocale();die;
+//
+//
+//
+////        if (App::isLocale('en')){
+////            App::setlocale('de');
+////
+////
+////        }elseif(App::isLocale('de')){
+////            App::setlocale('en');
+////
+////        }
+////
+////        return redirect()->back();
+//    })->name('translate');
+//
+//});

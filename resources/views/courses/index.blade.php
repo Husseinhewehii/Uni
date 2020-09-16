@@ -6,6 +6,10 @@
     <link href="{{ asset('css/users.css') }}" rel="stylesheet">
     <div class="container">
         <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('courses.export.excel')}}">Export Courses</a>
+        <br>
+        {{--<a class="btn btn-success table-link" style="margin: 10px;" href="{{route('insert_many_courses')}}">Insert Courses</a>--}}
+        <a class="btn btn-success table-link" style="margin: 10px;" href="{{route('courses.insert.twenties')}}">Insert Courses</a>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="main-box clearfix">

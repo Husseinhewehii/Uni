@@ -131,6 +131,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
+
     public static function boot() {
         parent::boot();
 
@@ -138,5 +139,6 @@ class User extends Authenticatable implements MustVerifyEmail
             $user->professorCourses()->delete();
         });
     }
+
 
 }
