@@ -19,9 +19,10 @@ class UserSeeder extends Seeder
             'password' =>'test1234',
             'gender'=> 1,
             'type'=> 1,
-            'date_of_birth' => '1980-07-11'
+            'date_of_birth' => '1980-07-11',
+            'api_token' => str_random(60),
         ]);
-//        factory(User::class, 10)->create();
+        factory(User::class, 10)->create();
 
 
 //        factory(App\Models\User::class, 10)->create()->each(function ($users) {

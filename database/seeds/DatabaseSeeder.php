@@ -14,11 +14,11 @@ class DatabaseSeeder extends Seeder
 //
 
         $this->call([
-            UserSeeder::class,
+//            UserSeeder::class,
             //CourseSeeder::class,
-            GroupSeeder::class,
-            GroupUserSeeder::class,
-            GroupPermissionSeeder::class
+//            GroupSeeder::class,
+//            GroupUserSeeder::class,
+//            GroupPermissionSeeder::class
         ]);
     }
 }
