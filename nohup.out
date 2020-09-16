@@ -1,0 +1,37 @@
+ [2020-09-16 14:30:54][629] Processing: App\Events\TaskCompletedEvent
+PHP Fatal error:  method_exists(): The script tried to execute a method or access a property of an incomplete object. Please ensure that the class definition "App\Events\TaskCompletedEvent" of the object you are trying to operate on was loaded _before_ unserialize() gets called or provide an autoloader to load the class definition in /var/www/html/workspace/Uni/vendor/laravel/framework/src/Illuminate/Broadcasting/BroadcastEvent.php on line 43
+
+   Symfony\Component\Debug\Exception\FatalErrorException  : method_exists(): The script tried to execute a method or access a property of an incomplete object. Please ensure that the class definition "App\Events\TaskCompletedEvent" of the object you are trying to operate on was loaded _before_ unserialize() gets called or provide an autoloader to load the class definition
+
+  at /var/www/html/workspace/Uni/vendor/laravel/framework/src/Illuminate/Broadcasting/BroadcastEvent.php:43
+    39|      * @return void
+    40|      */
+    41|     public function handle(Broadcaster $broadcaster)
+    42|     {
+  > 43|         $name = method_exists($this->event, 'broadcastAs')
+    44|                 ? $this->event->broadcastAs() : get_class($this->event);
+    45| 
+    46|         $broadcaster->broadcast(
+    47|             Arr::wrap($this->event->broadcastOn()), $name,
+
+
+   Whoops\Exception\ErrorException  : method_exists(): The script tried to execute a method or access a property of an incomplete object. Please ensure that the class definition "App\Events\TaskCompletedEvent" of the object you are trying to operate on was loaded _before_ unserialize() gets called or provide an autoloader to load the class definition
+
+  at /var/www/html/workspace/Uni/vendor/laravel/framework/src/Illuminate/Broadcasting/BroadcastEvent.php:43
+    39|      * @return void
+    40|      */
+    41|     public function handle(Broadcaster $broadcaster)
+    42|     {
+  > 43|         $name = method_exists($this->event, 'broadcastAs')
+    44|                 ? $this->event->broadcastAs() : get_class($this->event);
+    45| 
+    46|         $broadcaster->broadcast(
+    47|             Arr::wrap($this->event->broadcastOn()), $name,
+
+  Exception trace:
+
+  1   Whoops\Run::handleError()
+      /var/www/html/workspace/Uni/vendor/filp/whoops/src/Whoops/Run.php:408
+
+  2   Whoops\Run::handleShutdown()
+      [internal]:0

@@ -7,17 +7,24 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Uni</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@1.0.0"></script>
+
+
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styling.css') }}" rel="stylesheet">
 
 
 </head>
@@ -25,13 +32,16 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('home')}}">
                     Home
                 </a>
 
+                {{--app()->getLocale()--}}
+                {{--,['language'=>'en']--}}
+                {{--)--}}
                 <div class="dropdown">
                     <a class="navbar-brand " href="#">
-                        Users
+                        {{ __('translations.users')}}
                     </a>
                     <ul class="nav-item dropdown-content bg-dark">
                         <li >
@@ -55,8 +65,8 @@
 
 
                     <div class="dropdown">
-                        <a class="navbar-brand" href="{{route('courses.index')}}">
-                            Courses
+                        <a class="navbar-brand" href="{{route('courses.index' )}}">
+                            {{ __('translations.courses')}}
                         </a>
                         @can('create',\App\Models\Course::class)
                             <li class="nav-item dropdown-content bg-dark">
@@ -92,6 +102,7 @@
 
 
 
+
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -102,8 +113,16 @@
 
                     </ul>
 
+
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        {{--<div class="dropdown">--}}
+                            {{--<a class="navbar-brand" href="{{route('translate')}}">--}}
+                                {{--Translate--}}
+                            {{--</a>--}}
+
+                        {{--</div>--}}
                         <!-- Authentication Links -->
                         @guest
                             {{--<li class="nav-item">--}}
@@ -141,6 +160,32 @@
                                 </div>
                             </li>
 
+                            <li class="nav-item dropdown">
+                                    <a id="navbarDropdown" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        <i class="fa fa-bell"></i>
+                                        {{--<example-component>--}}
+                                                {{--hi--}}
+                                        {{--</example-component>--}}
+                                        {{--<ringer>--}}
+                                            {{--ringer is here--}}
+                                        {{--</ringer>--}}
+                                        @if(auth()->user()->unReadNotifications->count())
+                                            <span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>
+                                        @endif
+
+                                    </a>
+                                    <ol class="dropdown-menu">
+                                        <li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>
+                                        @foreach(auth()->user()->unReadnotifications as $notification)
+                                            <li style="background-color: #1b4b72"><a href="#" >{{$notification->data}}</a></li>
+                                        @endforeach
+
+                                        @foreach(auth()->user()->readNotifications as $notification)
+                                            <li ><a href="#" >{{$notification->data}}</a></li>
+                                        @endforeach
+                                    </ol>
+                            </li>
+                            <li class="nav-link"><a href="{{route('send_notification')}}">Send Notification</a></li>
                         @endguest
                     </ul>
                 </div>
@@ -151,7 +196,14 @@
             @yield('content')
         </main>
     </div>
-
+    <script>
+        Echo.channel('home')
+            .listen('.App\\Events\\BenachrichtigungEvent', (e) => {
+                console.log('works');
+                console.log(e);
+            });
+    </script>
     @yield('scripts')
+
 </body>
 </html>
