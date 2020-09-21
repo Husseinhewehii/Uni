@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\BenachrichtigungEvent;
+use App\Notifications\Benachrichtigung;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
@@ -24,8 +25,10 @@ class BenachrichtigungListener
      * @param  BenachrichtigungEvent  $event
      * @return void
      */
-    public function handle(BenachrichtigungEvent $event)
+    public function handleCreateNotify(BenachrichtigungEvent $event)
     {
-        print_r($event);
+
+        $user=$event->user;
+        $user->notify(new Benachrichtigung($user));
     }
 }

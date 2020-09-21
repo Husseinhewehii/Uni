@@ -19,7 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-
+//Route::get('send-notification',function(){
+////    $user = auth()->user();
+////    $user->notify(new Benachrichtigung($user));
+////    event(new BenachrichtigungEvent($user));
+//    return redirect()->back();
+//})->name('send_notification');
 
 
 //Route::resource('users.courses',"API\UserCoursesController")->except(['show']);
@@ -32,6 +37,9 @@ Route::prefix('/')->attribute('namespace', 'Api')->group(function () {
     Route::resource('courses',"CourseController");
     Route::post('/login',"AuthController@login");
     Route::post('/users/password-reset',"UserController@sendPasswordResetLink");
+
+    Route::get('/users/{user}/notifications','UserController@getNotifications');
+    Route::get('send-notification/{user}','UserController@postNotification');
 
 
 });
