@@ -15,6 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/body-pix@1.0.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 
     <!-- Fonts -->
@@ -139,11 +142,11 @@
 
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle  " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <div id='user_auth_dropdown' class="dropdown-menu dropdown-menu-right dropdown-content" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
@@ -160,21 +163,16 @@
                                 </div>
                             </li>
 
-                            <li class="nav-item dropdown">
-                                    <a id="navbarDropdown" class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            <li class="nav-item dropdown" >
+                                    <a id="navbarDropdown"  class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         <i class="fa fa-bell"></i>
-                                        {{--<example-component>--}}
-                                                {{--hi--}}
-                                        {{--</example-component>--}}
-                                        {{--<ringer>--}}
-                                            {{--ringer is here--}}
-                                        {{--</ringer>--}}
+
                                         @if(auth()->user()->unReadNotifications->count())
                                             <span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>
                                         @endif
 
                                     </a>
-                                    <ol class="dropdown-menu">
+                                    <ol class="dropdown-content" id='user_auth_dropdown'>
                                         <li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>
                                         @foreach(auth()->user()->unReadnotifications as $notification)
                                             <li style="background-color: #1b4b72"><a href="#" >{{$notification->data}}</a></li>
@@ -186,6 +184,23 @@
                                     </ol>
                             </li>
                             <li class="nav-link"><a href="{{route('send_notification')}}">Send Notification</a></li>
+                                <li class="nav-item dropdown" >
+                                    <a id="navbarDropdown"  class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        <i class="fa fa-bell"></i>
+                                        {{--@if(auth()->user()->unReadNotifications->count())--}}
+                                            {{--<span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>--}}
+                                        {{--@endif--}}
+                                        {{--<span class="badge badge-danger">@{{ notifications_count}}</span>--}}
+                                    </a>
+                                    <ol class="dropdown-content" id='user_auth_dropdown'>
+                                        <li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>
+                                        <div v-for="notification in notifications">
+                                            <li>@{{ notification.data }}</li>
+                                        </div>
+                                    </ol>
+                                </li>
+                            <li class="nav-link"><button @click.prevent="postNotification">Send Notification</button></li>
+
                         @endguest
                     </ul>
                 </div>
@@ -197,12 +212,39 @@
         </main>
     </div>
     <script>
-        Echo.channel('home')
-            .listen('.App\\Events\\BenachrichtigungEvent', (e) => {
-                console.log('works');
-                console.log(e);
-            });
+        const app = new Vue({
+            el: '#app',
+            data: {
+                notifications: {},
+                user: {!! Auth::check() ? Auth::user()->toJson() : 'null' !!}
+            },
+            mounted(){
+                this.getNotifications();
+            },
+            methods:{
+                getNotifications(){
+                    axios.get('/api/users/'+this.user.id+'/notifications')
+                        .then((response) => {
+                            this.notifications = response.data
+                        })
+                        .catch(function(error){
+                            console.log(error);
+                        });
+                },
+                postNotification(){
+                    axios.get('api/send-notification/'+this.user.id)
+                        .then((response) => {
+                            console.log(response.data);
+                            this.notifications.unshift(response.data)
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+        });
     </script>
+
     @yield('scripts')
 
 </body>

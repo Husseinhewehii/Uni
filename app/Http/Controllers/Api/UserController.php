@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 
 use App\Constants\UserTypes;
+use App\Events\BenachrichtigungEvent;
 use App\Http\Requests\Api\LoginRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Notifications\Benachrichtigung;
 use App\repository\UserRepository;
 use App\Http\Services\UserServices;
 
@@ -105,4 +107,26 @@ class UserController extends Controller
         //  session()->flash('success', trans('passwords.sent'));
         return response(['message'=>"email sent to $email"]);
     }
+
+    public function getNotifications(User $user){
+
+
+        return response()->json($user->notifications);
+    }
+
+    public function postNotification(User $user){
+
+
+//        $user->notify(new Benachrichtigung($user));
+        event(new BenachrichtigungEvent($user));
+
+
+        $notification = $user->notifications()->latest()->first();
+
+
+        return $notification->toJson();
+    }
+
+
+
 }

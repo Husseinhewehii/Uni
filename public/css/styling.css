@@ -46,3 +46,13 @@
 .dropdown:hover .dropbtn {
     background-color: black;
 }
+
+#user_auth_dropdown{
+    color:white;
+    background-color:red;
+}
+
+#user_auth_dropdown a:hover{
+    color:white;
+    background-color:black;
+}

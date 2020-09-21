@@ -134,9 +134,7 @@ Route::get('logs','LogsController@index')->name('logs.index');
 
 
 Route::get('send-notification',function(){
-    $user = auth()->user();
-    $user->notify(new Benachrichtigung($user));
-    event(new BenachrichtigungEvent($user));
+
     return redirect()->back();
 })->name('send_notification');
 
@@ -155,21 +153,21 @@ Route::get('mark-as-read',function (){
 //    })->name('welcome');
 //
 //    Route::get('translate',function (){
-////        App::setlocale('de');
+//        App::setlocale('de');
 ////    echo App::getLocale();die;
 //
 //
 //
-////        if (App::isLocale('en')){
-////            App::setlocale('de');
-////
-////
-////        }elseif(App::isLocale('de')){
-////            App::setlocale('en');
-////
-////        }
-////
-////        return redirect()->back();
+//        if (App::isLocale('en')){
+//            App::setlocale('de');
+//
+//
+//        }elseif(App::isLocale('de')){
+//            App::setlocale('en');
+//
+//        }
+//
+//        return redirect()->back();
 //    })->name('translate');
 //
 //});
