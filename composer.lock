@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b69e722c14708b008e42ba31b5f790a8",
+    "content-hash": "dc18100ba727ee678712d5dad92f09d3",
     "packages": [
         {
             "name": "astrotomic/laravel-translatable",

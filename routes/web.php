@@ -42,6 +42,7 @@ Route::get('/password/go-reset','UserController@goReset')->name('password.reset'
 Route::post('/password/reset','UserController@resetPassword')->name('users.password.reset');
 Route::get('/password/go-change/{user}','UserController@goChangePassword')->name('users.password.go.change');
 Route::post('/password/change/{user}','UserController@updatePassword')->name('users.password.change');
+Route::get('/notification/go-send','UserController@goSendNotification')->name('notifications.go.send');
 Route::resource('users',"UserController");
 
 
@@ -131,6 +132,8 @@ Route::get('logs','LogsController@index')->name('logs.index');
 //    dispatch($job);
 //    return '100000 users added';
 //});
+
+
 
 
 Route::get('send-notification',function(){

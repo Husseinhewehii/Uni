@@ -118,8 +118,11 @@ class UserController extends Controller
 
 
 //        $user->notify(new Benachrichtigung($user));
-        event(new BenachrichtigungEvent($user));
 
+//        event(new BenachrichtigungEvent($user));
+
+
+        broadcast(new BenachrichtigungEvent($user))->toOthers();
 
         $notification = $user->notifications()->latest()->first();
 
