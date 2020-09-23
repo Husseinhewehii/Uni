@@ -115,7 +115,7 @@
                     {{--<li class="nav-item"><a href="{{route(Route::currentRouteName(),'de')}}" class="nav-link">Deutsch</a></li>--}}
                 </div>
 
-                <example-component></example-component>
+                <example-component>  </example-component>
 
             </div>
         </body>
