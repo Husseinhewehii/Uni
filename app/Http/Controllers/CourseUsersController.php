@@ -12,7 +12,7 @@ use App\Http\Services\CourseServices;
 use Excel;
 
 
-class CourseUsersController extends Controller
+class CourseUsersController extends BaseController
 {
     private $userRepository;
     private $courseServices;
@@ -37,6 +37,11 @@ class CourseUsersController extends Controller
     public function store(CourseUserRequest $request, Course $course){
         $this->courseServices->createUser($request, $course);
         return redirect(route('courses.users.index',['course'=>$course]));
+    }
+
+    public function show()
+    {
+        echo 'hi';
     }
 
     public function destroy(Course $course,User $user)

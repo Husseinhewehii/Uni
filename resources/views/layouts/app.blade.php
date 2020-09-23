@@ -37,6 +37,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
+
                 <a class="navbar-brand" href="{{ route('home')}}">
                     Home
                 </a>
@@ -165,27 +166,27 @@
                                 </div>
                             </li>
 
-                            <li class="nav-item dropdown" >
-                                    <a id="navbarDropdown"  class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        <i class="fa fa-bell"></i>
+                            {{--<li class="nav-item dropdown" >--}}
+                                    {{--<a id="navbarDropdown"  class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>--}}
+                                        {{--<i class="fa fa-bell"></i>--}}
 
-                                        @if(auth()->user()->unReadNotifications->count())
-                                            <span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>
-                                        @endif
+                                        {{--@if(auth()->user()->unReadNotifications->count())--}}
+                                            {{--<span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>--}}
+                                        {{--@endif--}}
 
-                                    </a>
-                                    <ol class="dropdown-content" id='user_auth_dropdown'>
-                                        <li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>
-                                        @foreach(auth()->user()->unReadnotifications as $notification)
-                                            <li style="background-color: #1b4b72"><a href="#" >{{$notification->data}}</a></li>
-                                        @endforeach
+                                    {{--</a>--}}
+                                    {{--<ol class="dropdown-content" id='user_auth_dropdown'>--}}
+                                        {{--<li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>--}}
+                                        {{--@foreach(auth()->user()->unReadnotifications as $notification)--}}
+                                            {{--<li style="background-color: #1b4b72"><a href="#" >{{$notification->data}}</a></li>--}}
+                                        {{--@endforeach--}}
 
-                                        @foreach(auth()->user()->readNotifications as $notification)
-                                            <li ><a href="#" >{{$notification->data}}</a></li>
-                                        @endforeach
-                                    </ol>
-                            </li>
-                            <li class="nav-link"><a href="{{route('send_notification')}}">Send Notification</a></li>
+                                        {{--@foreach(auth()->user()->readNotifications as $notification)--}}
+                                            {{--<li ><a href="#" >{{$notification->data}}</a></li>--}}
+                                        {{--@endforeach--}}
+                                    {{--</ol>--}}
+                            {{--</li>--}}
+                            {{--<li class="nav-link"><a href="{{route('send_notification')}}">Send Notification</a></li>--}}
                                 <li class="nav-item dropdown" >
                                     <a id="navbarDropdown"  class="nav-link " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                         <i class="fa fa-bell"></i>
@@ -250,12 +251,12 @@
                     Echo.channel('navigation')
                         .listen('BenachrichtigungEvent', (notification) => {
 
+                            this.notifications.unshift({'data':notification['data']});
+                            this.notifications_count = notification['notifications_count'];
 
-                            this.notifications.unshift({'data':notification['notficationData']});
+                            console.log(notification['data']);
+                            console.log(this.notifications_count);
 
-
-                            // this.notifications_count = notification['notificationsCount'];
-                            // console.log(notification['notificationsCount']);
                         });
                 }
             }

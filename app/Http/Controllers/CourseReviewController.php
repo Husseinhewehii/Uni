@@ -9,7 +9,7 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CourseReviewController extends Controller
+class CourseReviewController extends BaseController
 {
 
     private $reviewServices;
@@ -22,7 +22,6 @@ class CourseReviewController extends Controller
     }
 
     public function index(Course $course){
-
         //$this->authorize('view', [Review::class, $course]);
         $reviews = $course->reviews;
         return view('courses.reviews.index',['reviews'=>$reviews, 'course' => $course]);

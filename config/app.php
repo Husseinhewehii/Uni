@@ -82,10 +82,10 @@ return [
 
 
     'locale' => 'en',
-//    'locales' => [
-//        'en' => 'English',
-//        'de' => 'German'
-//    ],
+    'locales' => [
+        'en' => 'English',
+        'de' => 'German'
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +175,7 @@ return [
          * Package Service Providers...
          */
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         /*
          * Application Service Providers...
          */

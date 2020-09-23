@@ -10,7 +10,7 @@ use App\Models\Course;
 use App\repository\CourseRepository;
 use App\Http\Services\UserServices;
 
-class UserCoursesController extends Controller
+class UserCoursesController extends BaseController
 {
 
     private $courseRepository;

@@ -18,8 +18,8 @@ class BenachrichtigungEvent implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
-    public $notficationData ;
-    public $notificationsCount;
+//    public $notficationData ;
+//    public $notificationsCount;
 
     /**
      * Create a new event instance.
@@ -29,13 +29,13 @@ class BenachrichtigungEvent implements ShouldBroadcastNow
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->notficationData="";
-        $this->notificationsCount='';
-        $notification = $user->notifications()->latest()->first();
-        if($notification){
-            $this->notficationData= $notification['data'];
-            $this->notificationsCount = $user->notifications()->count();
-        }
+//        $this->notficationData="";
+//        $this->notificationsCount='';
+//        $notification = $user->notifications()->latest()->first();
+//        if($notification){
+//            $this->notficationData= $notification['data'];
+//            $this->notificationsCount = $user->notifications()->count();
+//        }
 
     }
 
@@ -44,15 +44,16 @@ class BenachrichtigungEvent implements ShouldBroadcastNow
         return new Channel('navigation');
     }
 
-//    public function broadcastWith()
-//    {
-////        $notification = $this->user->notifications()->latest()->first();
-////        $notification_data = $notification['data'];
-////
-////
-////        return [
-////            'data' => $notification_data
-////        ];
-//    }
+    public function broadcastWith()
+    {
+        $notification = $this->user->notifications()->latest()->first();
+        $notification_data = $notification['data'];
+        $notifications_count =  $this->user->notifications()->count();
+
+        return [
+            'data' => $notification_data,
+            'notifications_count' => $notifications_count
+        ];
+    }
 
 }

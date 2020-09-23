@@ -32,14 +32,18 @@ use Faker\Generator as Faker;
 ////
 //});
 
-//$factory->define(User::class, function (Faker $faker) {
-//    static $password;
-//
-//    return [
-//        'name' => $faker->name,
-//        'email' => $faker->unique()->safeEmail,
-//        'password' => $password ?: $password = bcrypt('secret'),
-//        'api_token' => str_random(60),
-//        'remember_token' => str_random(10),
-//    ];
-//});
+$factory->define(User::class, function (Faker $faker) {
+    static $password;
+
+    return [
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
+        'remember_token' => str_random(60),
+        'date_of_birth' =>  $faker->dateTime,
+        'gender'=> $faker->randomElement([1,2]),
+        'type'=> $faker->randomElement([1, 2]),
+        'api_token' => str_random(60),
+
+    ];
+});
