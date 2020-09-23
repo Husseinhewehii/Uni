@@ -9,7 +9,7 @@ use App\Models\Group;
 use App\repository\GroupRepository;
 use App\Http\Services\GroupServices;
 
-class GroupController extends Controller
+class GroupController extends BaseController
 {
 
     private $groupRepository;

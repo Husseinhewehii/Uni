@@ -101,8 +101,18 @@
                     <div class="title m-b-md">
                         <h1>{{ __('translations.welcome') }}</h1>
                     </div>
-                    <li class="nav-item"><a href="{{route(Route::currentRouteName(),'en')}}" class="nav-link">English</a></li>
-                    <li class="nav-item"><a href="{{route(Route::currentRouteName(),'de')}}" class="nav-link">Deutsch</a></li>
+                    @foreach (Config::get('app.locales') as $lang => $language)
+                        @if ($lang != App::getLocale())
+                            <a href="{{ route(Route::currentRouteName(), array_merge( request()->route()->parameters(), ['lang' => $lang])) }}" class="dropdown-item d-flex align-items-center">
+                                <div>
+                                    <strong>{{$language}}</strong>
+                                </div>
+                            </a>
+                        @endif
+                    @endforeach
+
+                    {{--<li class="nav-item"><a href="{{route(Route::currentRouteName(),'en')}}" class="nav-link">English</a></li>--}}
+                    {{--<li class="nav-item"><a href="{{route(Route::currentRouteName(),'de')}}" class="nav-link">Deutsch</a></li>--}}
                 </div>
 
                 <example-component></example-component>
@@ -111,3 +121,24 @@
         </body>
     </html>
 @endsection
+
+
+{{--<script>--}}
+    {{--var client = AgoraRTC.createClient({mode: 'live', codec: "h264"});--}}
+
+    {{--client.init(<APPID>, function () {--}}
+        {{--console.log("AgoraRTC client initialized");--}}
+    {{--}, function (err) {--}}
+        {{--console.log("AgoraRTC client init failed", err);--}}
+    {{--});--}}
+
+        {{--localStream.init(function() {--}}
+        {{--console.log("getUserMedia successfully");--}}
+        {{--localStream.play('agora_local');--}}
+        {{--}, function (err) {--}}
+        {{--console.log("getUserMedia failed", err);--}}
+        {{--});--}}
+
+
+
+{{--</script>--}}

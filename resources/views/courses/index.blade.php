@@ -58,6 +58,8 @@
                                             {{--@php $x+=$review->rate @endphp--}}
                                         {{--@endforeach--}}
                                         {{--<a href="{{ route('course.reviews.index',['course'=>$course]) }}" class="user-link">Reviews({{$course->reviews->count() >=1 ? $x/$course->reviews->count() : 'No Reviews'}})</a>--}}
+
+
                                         <a href="{{ route('course.reviews.index',['course'=>$course]) }}" class="user-link">Reviews ({{$course->reviews->count() >= 1 ? $course->calculateAverageCourseRate() : 'No Reviews'}})</a>
                                     </td>
                                     {{--@if(auth()->user()->hasAccess("courses.update") || auth()->user()->hasAccess("courses.destroy"))--}}

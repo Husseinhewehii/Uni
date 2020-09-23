@@ -39,7 +39,11 @@
                                 <tr>
                                     <td>
                                         <div >
-                                            <a href="#" class="user-link">{{\App\Models\User::find($review->user_id)->name}}</a>
+                                            @if(\App\Models\User::find($review->user_id))
+                                                <a href="#" class="user-link">{{\App\Models\User::find($review->user_id)->name}}</a>
+                                            @else
+                                                User
+                                            @endif
                                         </div>
                                     </td>
                                     <td>

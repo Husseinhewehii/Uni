@@ -12,8 +12,10 @@ class GroupUserSeeder extends Seeder
      */
     public function run()
     {
+
+        $bruce_wayne = \App\Models\User::where('email','bruce@wayne.com')->first();
         factory(GroupUser::class)->create([
-            'user_id' => 1,
+            'user_id' => $bruce_wayne->id,
             'group_id'=>1
         ]);
     }

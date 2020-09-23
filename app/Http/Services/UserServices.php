@@ -33,6 +33,7 @@ class UserServices
             }
 
 
+
             $user->fill($request->request->all());
             $user->save();
 
@@ -59,6 +60,10 @@ class UserServices
                 $img = $this->uploaderService->upload($file,'users');
                 $user->image = $img;
             }
+
+
+            $user->api_token=str_random(60);
+            $user->remember_token=str_random(60);
 
             $user->fill($request->request->all());
             $user->save();
