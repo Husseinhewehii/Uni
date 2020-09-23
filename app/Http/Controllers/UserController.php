@@ -176,5 +176,10 @@ class UserController extends Controller
         return redirect('/')->with('success', 'password_updated_successfully');
     }
 
+    public function goSendNotification()
+    {
+        $users = $this->userRepository->getAll(request())->paginate(10);
+        return view('send_notification', ['users' => $users]);
+    }
 
 }

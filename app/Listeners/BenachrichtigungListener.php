@@ -25,9 +25,9 @@ class BenachrichtigungListener
      * @param  BenachrichtigungEvent  $event
      * @return void
      */
+
     public function handleCreateNotify(BenachrichtigungEvent $event)
     {
-
         $user=$event->user;
         $user->notify(new Benachrichtigung($user));
     }

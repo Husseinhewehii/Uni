@@ -10,7 +10,7 @@
     <title>Uni</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}" ></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
@@ -18,6 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://js.pusher.com/4.1/pusher.min.js"></script>
 
 
     <!-- Fonts -->
@@ -190,7 +192,7 @@
                                         {{--@if(auth()->user()->unReadNotifications->count())--}}
                                             {{--<span class="badge badge-danger">{{auth()->user()->unReadNotifications->count()}}</span>--}}
                                         {{--@endif--}}
-                                        {{--<span class="badge badge-danger">@{{ notifications_count}}</span>--}}
+                                        {{--<span class="badge badge-danger" v-once="notifications_count">@{{ notifications_count}}</span>--}}
                                     </a>
                                     <ol class="dropdown-content" id='user_auth_dropdown'>
                                         <li><a href="{{route('mark_read')}}" style="color:green;">Mark All as Read</a></li>
@@ -199,7 +201,9 @@
                                         </div>
                                     </ol>
                                 </li>
+                                {{--<li class="nav-link"><a href="{{route('notifications.go.send')}}">Send Notification</a></li>--}}
                             <li class="nav-link"><button @click.prevent="postNotification">Send Notification</button></li>
+
 
                         @endguest
                     </ul>
@@ -216,10 +220,12 @@
             el: '#app',
             data: {
                 notifications: {},
+                notifications_count:0,
                 user: {!! Auth::check() ? Auth::user()->toJson() : 'null' !!}
             },
             mounted(){
                 this.getNotifications();
+                this.listen();
             },
             methods:{
                 getNotifications(){
@@ -234,17 +240,29 @@
                 postNotification(){
                     axios.get('api/send-notification/'+this.user.id)
                         .then((response) => {
-                            console.log(response.data);
-                            this.notifications.unshift(response.data)
+                            // this.notifications.unshift(response.data)
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
+                },
+                listen(){
+                    Echo.channel('navigation')
+                        .listen('BenachrichtigungEvent', (notification) => {
+
+
+                            this.notifications.unshift({'data':notification['notficationData']});
+
+
+                            // this.notifications_count = notification['notificationsCount'];
+                            // console.log(notification['notificationsCount']);
+                        });
                 }
             }
         });
-    </script>
 
+
+    </script>
     @yield('scripts')
 
 </body>
