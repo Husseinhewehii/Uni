@@ -38,6 +38,21 @@ Route::prefix('{lang?}')->group(function(){
 
     Route::get('/logged-in', 'HomeController@index')->name('logged_in');
 
+    Route::get('workout_ajax', function () {
+        return view('ajax.workout_ajax');
+    });
+    Route::get('workout_ajax_2', function () {
+        return view('ajax.workout_ajax_2');
+    });
+    Route::get('workout_ajax_text', function () {
+        return view('ajax.workout_ajax_text');
+    });
+    Route::get('workout_ajax_text_2_user', function () {
+        return view('ajax.workout_ajax_text_2_user');
+    });
+    Route::get('workout_ajax_text_2_users', function () {
+        return view('ajax.workout_ajax_text_2_users');
+    });
 
 
 

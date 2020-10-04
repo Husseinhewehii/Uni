@@ -58,6 +58,7 @@
             </div>
         </div>
     </div>
+
     @foreach ($generalCourses as $course)
         <div class="modal fade" id="removeUser{{ $course->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -83,4 +84,7 @@
             </div>
         </div>
     @endforeach
+
+
 @endsection
+
