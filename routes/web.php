@@ -55,6 +55,14 @@ Route::prefix('{lang?}')->group(function(){
     });
 
 
+    Route::get('/ajax-form','AjaxController@ajaxForm');
+    Route::post('/ajax-implement','AjaxController@ajaxImplement')->name('ajax_implement');
+    Route::get('/country-city','AjaxController@lander')->name('country_city');
+    Route::post('/country-city-fetch','AjaxController@fetch')->name('country_city_fetch');
+
+
+
+
 
     Route::get('users/index-student',"UserController@indexStudents")->name('users.index.students');
     Route::get('users/index-professor',"UserController@indexProfessors")->name('users.index.professors');
