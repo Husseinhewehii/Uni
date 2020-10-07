@@ -107,7 +107,7 @@
                 @endcan
 
 
-
+                <a href="https://wa.me/+201111353067" class="btn"><i class="fa fa-whatsapp"></i></a>
 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

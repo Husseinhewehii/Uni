@@ -40,9 +40,13 @@ Route::prefix('/')->attribute('namespace', 'Api')->group(function () {
 
     Route::get('/users/{user}/notifications','UserController@getNotifications');
     Route::get('send-notification/{user}','UserController@postNotification');
-
+    Route::post('/chat-bot', 'ChatBotController@listenToReplies');
 
 });
+
+Route::post('/chat-bot', 'ChatBotController@listenToReplies');
+
+
 Route::prefix('/')->attribute('namespace', 'Api')->middleware('auth:api')->group(function () {
     Route::resource('users',"UserController");
     //Route::get('/user-update',"UserController@update")->name('api.user.update');

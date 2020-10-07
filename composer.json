@@ -23,7 +23,9 @@
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
         "pusher/pusher-php-server": "~4.0",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "twilio/sdk": "^6.10",
+        "yajra/laravel-datatables-oracle": "~9.0",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.8",
