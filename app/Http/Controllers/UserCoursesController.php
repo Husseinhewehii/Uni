@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Constants\WeekDaysTypes;
 use App\Http\Requests\UserCourseRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CourseUser;
@@ -42,8 +43,6 @@ class UserCoursesController extends BaseController
         $courses = $user->courses;
         $professorCourses = $user->professorCourses;
 
-
-
         return view('users.courses.student_index',['user'=>$user, 'courses' => $courses,'professorCourses'=>$professorCourses]);
     }
 
@@ -76,6 +75,54 @@ class UserCoursesController extends BaseController
 //        $msg = 'Course removed successfully';
 //        return redirect(route('users.courses.index',['user'=>$user]));
     }
+
+
+    public function getLesionActualDate($days, $sessionsNumber)
+        {
+//            $days = $this->orderLesionDays($days);
+            $dates = [];
+            $count = 0;
+            $firstDate = '';
+
+            while ($count < $sessionsNumber) {
+                for ($i = 0; $i < count($days); $i++) {
+                    if ($count < $sessionsNumber) {
+                        $date = date('Y-m-d', strtotime('next ' .$days[$i]));
+                        if ($firstDate != '') {
+                            $date = date('Y-m-d', strtotime('next ' .$days[$i], strtotime($firstDate)));
+                        }
+
+                        $dates [] = $date;
+                        $firstDate = $date;
+                        $count++;
+                    }
+                }
+            }
+
+            return $dates;
+        }
+
+    public function orderLesionDays($days)
+        {
+            foreach ($days as $day) {
+                $dates[] = Carbon::parse('next ' . WeekDaysTypes::getOne($day));
+            }
+
+            usort($dates, function($a, $b) {
+                return $a <=> $b;
+            });
+
+            if ($dates[0]->format('l') == Carbon::tomorrow()->format('l')) {
+                array_push($dates, $dates[0]);
+                array_shift($dates);
+            }
+
+            for ($i = 0; $i < count($dates); $i++) {
+                $dates[$i] = $dates[$i]->format('l') ;
+            }
+
+            return $dates;
+        }
 
 
 }
