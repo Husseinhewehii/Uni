@@ -187,6 +187,8 @@ return [
 //        App\Providers\RepositoryServiceProvider::class,
 //        BeyondCode\LaravelWebSockets\Statistics\Logger\HttpStatisticsLogger::class,
 //        BeyondCode\LaravelWebSockets\Apps\ConfigAppProvider::class
+
+        Sichikawa\LaravelSendgridDriver\SendgridTransportServiceProvider::class
     ],
 
     /*

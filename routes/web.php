@@ -36,7 +36,7 @@ Route::prefix('{lang?}')->group(function(){
     })->name('welcome');
     Auth::routes(['verify'=>true]);
 
-    Route::get('/logged-in', 'HomeController@index')->name('logged_in');
+    Route::get('/logged-in', 'HomeController@index')->name('logged_in')->middleware('verified');
 
     Route::get('workout_ajax', function () {
         return view('ajax.workout_ajax');
